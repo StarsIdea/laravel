@@ -14,6 +14,7 @@
             <a class="mr-3" href="#">Playing</a>
             @if(!Auth::check())
                 <a class="mr-3" href="{{ route('login') }}">Login</a>
+                <a class="mr-3" href="{{ route('register') }}">Register</a>
             @else
                 <form class="d-inline-block" method="POST" action="{{ route('logout') }}">
                     @csrf
