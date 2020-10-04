@@ -20,6 +20,9 @@ class RedirectIfAuthenticated
     public function handle(Request $request, Closure $next, ...$guards)
     {
         $guards = empty($guards) ? [null] : $guards;
+        
+        if( $request->route()->named('login') )
+            session()->put('redirectTo', session('_previous')['url']);
 
         foreach ($guards as $guard) {
             if (Auth::guard($guard)->check()) {
