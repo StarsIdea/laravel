@@ -30,6 +30,12 @@
             Be the first to know!</p>
         </section>
 
+        <!-- Subscribe Form -->
+        <form id="frm_subscribe" method="get" action="#">
+            <input type="email" name="email" id="email" placeholder="Email Address" />
+            <input type="submit" value="Subscribe" />
+        </form>
+            
         <footer id="footer">
             <ul class="icons">
                 <li><a href="#" class="icon brands fa-twitter"><span class="label">Twitter</span></a></li>

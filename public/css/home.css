@@ -798,33 +798,33 @@ button,
     margin: 0 0 1em 0; } }
 
 /* Signup Form */
-#signup-form {
+#frm_subscribe {
   display: -moz-flex;
   display: -webkit-flex;
   display: -ms-flex;
   display: flex;
   position: relative; }
-  #signup-form input[type="text"],
-  #signup-form input[type="password"],
-  #signup-form input[type="email"] {
+  #frm_subscribe input[type="text"],
+  #frm_subscribe input[type="password"],
+  #frm_subscribe input[type="email"] {
     width: 18em; }
-  #signup-form > * {
+  #frm_subscribe > * {
     margin: 0 0 0 1em; }
-  #signup-form > :first-child {
+  #frm_subscribe > :first-child {
     margin: 0 0 0 0; }
   @media screen and (max-width: 480px) {
-    #signup-form {
+    #frm_subscribe {
       -moz-flex-direction: column;
       -webkit-flex-direction: column;
       -ms-flex-direction: column;
       flex-direction: column; }
-      #signup-form input[type="type"],
-      #signup-form input[type="password"],
-      #signup-form input[type="email"] {
+      #frm_subscribe input[type="type"],
+      #frm_subscribe input[type="password"],
+      #frm_subscribe input[type="email"] {
         width: 100%; }
-      #signup-form > * {
+      #frm_subscribe > * {
         margin: 1.25em 0 0 0; }
-      #signup-form .message {
+      #frm_subscribe .message {
         bottom: -1.5em;
         font-size: 0.9em;
         height: 1em;
