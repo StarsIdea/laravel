@@ -19,9 +19,10 @@ Route::get('/', function () {
 });
 
 Route::middleware(['auth:sanctum', 'verified'])->group(function () {
-    Route::get('dashboard', 'UserController@dashboard')->name('dashboard');
+    // Route::get('dashboard', 'UserController@dashboard')->name('dashboard');
 });
 
 Route::post('login', 'LoginController@authenticate')->name('login');
 Route::get('about', 'HomeController@about')->name('about');
 Route::get('playing', 'HomeController@playing')->name('playing');
+Route::post('subscribe', 'UserController@subscribe')->name('subscribe');

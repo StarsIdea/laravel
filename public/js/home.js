@@ -36,12 +36,12 @@
 
 					// Images (in the format of 'url': 'alignment').
 						images: {
-							'images/bg01.jpg': 'center',
-							'images/bg02.jpg': 'center',
-							'images/bg03.jpg': 'center',
-							'images/bg04.jpg': 'center',
-							'images/bg05.jpg': 'center',
-							'images/bg06.jpg': 'center'
+							'images/homepage/bg01.jpg': 'center',
+							'images/homepage/bg02.jpg': 'center',
+							'images/homepage/bg03.jpg': 'center',
+							'images/homepage/bg04.jpg': 'center',
+							'images/homepage/bg05.jpg': 'center',
+							'images/homepage/bg06.jpg': 'center'
 						},
 
 					// Delay.
@@ -104,3 +104,17 @@
 
 		})();
 })();
+
+$("#frm_subscribe").submit(function(e) {
+	e.preventDefault()
+
+	$.ajax({
+		url: 'subscribe',
+        type: 'POST',
+        dataType: 'json',
+		data: $(this).serialize(),
+		success: (data) => {
+			
+		}
+	})
+})

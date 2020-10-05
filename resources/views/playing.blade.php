@@ -1,5 +1,12 @@
 @extends('layouts.blank')
 @section('content')
+    <style>
+        body {
+            background: url('{{ asset("images/bg01.jpg")}}');
+            color: white;
+        }
+    </style>
+
     <div class="container my-5">
         <h1 class="text-center">Playing</h1>
         <p class="mt-4">
