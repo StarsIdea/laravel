@@ -27,6 +27,7 @@ class UserController extends Controller
         $user = Subscribe::create($validator->validated());
 
         return response()->json([
+            'success' => true,
             'message' => 'The email has been subscribed',
         ], 201);
     }

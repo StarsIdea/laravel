@@ -108,13 +108,26 @@
 $("#frm_subscribe").submit(function(e) {
 	e.preventDefault()
 
+	let form = $(this)
 	$.ajax({
 		url: 'subscribe',
         type: 'POST',
         dataType: 'json',
-		data: $(this).serialize(),
+		data: form.serialize(),
 		success: (data) => {
-			
+			if(data['success']) {
+				alert(data['message']);
+				form[0].reset();
+			}
+		},
+		error: (err) => {
+			let str = '';
+
+			for (const [key, value] of Object.entries(JSON.parse(err['responseJSON']))) {
+				str += `${key}: ${value}`;
+			}
+			if(str)
+				alert(str)
 		}
 	})
 })
