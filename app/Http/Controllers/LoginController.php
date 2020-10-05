@@ -28,10 +28,14 @@ class LoginController extends Controller
 
         if (Auth::attempt($credentials)) {
             // Authentication passed...
-            if(session()->has('redirectTo'))
-                return redirect(session('redirectTo'));
+            if(session()->has('redirectTo')) {
+                return redirect(session()->pull('redirectTo'));
+            }
             else
                 return redirect()->intended('home');
         }
+        
+        session()->flash('error', 'These credentials do not match.');
+        return redirect('login');
     }
 }

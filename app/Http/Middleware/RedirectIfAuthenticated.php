@@ -21,8 +21,9 @@ class RedirectIfAuthenticated
     {
         $guards = empty($guards) ? [null] : $guards;
         
-        if( $request->route()->named('login') )
+        if( $request->route()->named('login') && !session('redirectTo')) {
             session()->put('redirectTo', session('_previous')['url']);
+        }
 
         foreach ($guards as $guard) {
             if (Auth::guard($guard)->check()) {
