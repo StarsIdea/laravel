@@ -19,7 +19,7 @@ Route::get('/', function () {
 });
 
 Route::middleware(['auth:sanctum', 'verified'])->group(function () {
-    // Route::get('dashboard', 'UserController@dashboard')->name('dashboard');
+    Route::get('dashboard', 'UserController@dashboard')->name('dashboard');
 });
 
 Route::post('login', 'LoginController@authenticate')->name('login');

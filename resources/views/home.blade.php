@@ -18,6 +18,7 @@
                 <a class="mr-3" href="{{ route('login') }}">Login</a>
                 <a class="mr-3" href="{{ route('register') }}">Register</a>
             @else
+                <a class="mr-3" href="{{ route('dashboard') }}">{{ Auth::user()->name }}</a>
                 <form class="d-inline-block" method="POST" action="{{ route('logout') }}">
                     @csrf
                     <a class="mr-3" href="#" onclick="event.preventDefault(); this.closest('form').submit();">Logout</a>
