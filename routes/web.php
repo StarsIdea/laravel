@@ -25,4 +25,6 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
 Route::post('login', 'LoginController@authenticate')->name('login');
 Route::get('about', 'HomeController@about')->name('about');
 Route::get('playing', 'HomeController@playing')->name('playing');
+Route::get('terms', 'HomeController@terms')->name('terms');
+
 Route::post('subscribe', 'UserController@subscribe')->name('subscribe');

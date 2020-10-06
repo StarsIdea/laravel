@@ -1,12 +1,12 @@
 <x-guest-layout>
-    <x-jet-authentication-card>
+    <x-jet-authentication-card style="background: url({{ asset('images/bg01.jpg') }})">
         <x-slot name="logo">
             <x-jet-authentication-card-logo />
         </x-slot>
 
         <x-jet-validation-errors class="mb-4" />
 
-        <form method="POST" action="{{ route('register') }}">
+        <form id="frm_register" method="POST" action="{{ route('register') }}">
             @csrf
 
             <div>
@@ -32,7 +32,7 @@
             <div class="block mt-4">
                 <label class="flex items-center">
                     <input type="checkbox" class="form-checkbox" name="accept_terms" required>
-                    <span class="ml-2 text-sm text-gray-600">{{ __('Agree to terms and conditions') }}</span>
+                    <span class="ml-2 text-sm text-gray-600">Agree to <a href="{{ route('terms') }}" class="text-green-500" target="_blank" style="text-decoration: underline"> terms </a> and conditions</span>
                 </label>
             </div>
 
@@ -48,3 +48,11 @@
         </form>
     </x-jet-authentication-card>
 </x-guest-layout>
+
+<script src="https://code.jquery.com/jquery-3.5.1.min.js" integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script>
+
+<script>
+    $(document).ready(() => {
+        $("#frm_register").parent().parent().css('background', 'url({{ asset("images/bg01.jpg") }})')
+    })
+</script>

@@ -13,4 +13,8 @@ class HomeController extends Controller
     public function playing() {
         return view('playing');
     }
+
+    public function terms() {
+        return view('terms');
+    }
 }
