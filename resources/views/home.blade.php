@@ -12,6 +12,7 @@
 
     <body>
         <header style="position:absolute; top:10px; right: 10px;">
+            <a class="mr-3" href="{{ route('audition') }}">Audition</a>
             <a class="mr-3" href="{{ route('about') }}">About</a>
             <a class="mr-3" href="{{ route('playing') }}">Playing</a>
             @if(!Auth::check())
