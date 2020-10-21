@@ -33,7 +33,3 @@ Route::post('subscribe', 'UserController@subscribe')->name('subscribe');
 
 Route::get('/images', 'VideoController@getImages')->name('videos');
 Route::post('/audition/upload', 'VideoController@postUpload')->name('uploadfile');
-
-Auth::routes();
-
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');

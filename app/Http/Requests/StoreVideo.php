@@ -25,8 +25,8 @@ class StoreVideo extends FormRequest
     {
         return [
             'title' => 'required|max:250',
-            // 'file' => 'required|mimes:mp4,mov,ogg,qt,flv,ts,3gp,avi,wmv | max:20000'
             'file' => 'required|mimes:mp4,mov,ogg | max:20000'
         ];
     }
 }
+// 'file' => 'required|mimes:mp4,mov,ogg,qt,flv,ts,3gp,avi,wmv | max:20000'
