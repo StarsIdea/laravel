@@ -13,8 +13,14 @@
 
     <div class="container my-5 col-md-12">
         <h1 class="text-center">Audition</h1>
+        @if (session('success'))
+            <div class="alert alert-success alert-dismissable">
+                <button type="button" class="close" data-dismiss="alert">&times;</button>
+                {{session('success')}}
+            </div>
+        @endif
         <div class="col-md-4 upload-form-section">
-            <form id="audition file" method="post" action="audition/upload" enctype="multipart/form-data">
+            <form action="{{ route('uploadfile') }}" enctype="multipart/form-data" method="post">
                 @csrf
                 <div class="form-group">
                     <label for="name">Name:</label>
@@ -47,8 +53,9 @@
                         <label class="input-group-btn my-0">
                                     <span class="btn btn-large btn-outline-primary rounded-0" id="browse">
                                         Browse&hellip; 
-                                    <input id="video-input" type="file" multiple>
+                                    <input id="video-input" name="file" type="file" multiple>
                                     </span>
+                                    <span class="help-block text-danger">{{$errors->first('file')}}</span>
                                 </label>
                         <input type="text" class="form-control rounded-0" readonly placeholder="Upload video">
                 </div>
@@ -58,7 +65,7 @@
                         <input class="form-check-input" type="checkbox" name="disclaimer"> Accept disclaimer
                     </label>
                 </div>
-                <button type="submit" class="btn btn-primary">Upload</button>
+                <button class="btn btn-primary">Upload</button>
             </form>
         </div>
     </div>

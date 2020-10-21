@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\Route;
 | contains the "web" middleware group. Now create something great!
 |
 */
+Auth::routes();
 
 Route::get('/', function () {
     session('redirectTo', 'home');
@@ -27,6 +28,12 @@ Route::get('about', 'HomeController@about')->name('about');
 Route::get('playing', 'HomeController@playing')->name('playing');
 Route::get('terms', 'HomeController@terms')->name('terms');
 Route::get('audition', 'HomeController@audition')->name('audition');
-Route::post('audition/upload','AuditionController@upload');
 
 Route::post('subscribe', 'UserController@subscribe')->name('subscribe');
+
+Route::get('/images', 'VideoController@getImages')->name('videos');
+Route::post('/audition/upload', 'VideoController@postUpload')->name('uploadfile');
+
+Auth::routes();
+
+Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
