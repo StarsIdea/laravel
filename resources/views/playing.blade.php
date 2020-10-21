@@ -31,7 +31,8 @@
             data-setup='{}'
             style="width: 100%; height: 480px; border-radius: 10px;"    
         >
-            <source src="https://bitdash-a.akamaihd.net/content/sintel/hls/playlist.m3u8" type="application/x-mpegURL"></source>
+            <source src="https://streamingplayback.s3.amazonaws.com/hls_out/mrchuck-1601230682.m3u8" 
+            type="application/x-mpegURL"></source>
             <p class="vjs-no-js">
                 To view this video please enable JavaScript, and consider upgrading to a
                 web browser that

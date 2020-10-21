@@ -50,9 +50,9 @@
                                         Profile
                                     </jet-dropdown-link>
 
-                                    <jet-dropdown-link href="/user/api-tokens" v-if="$page.jetstream.hasApiFeatures">
+                                    <!-- <jet-dropdown-link href="/user/api-tokens" v-if="$page.jetstream.hasApiFeatures">
                                         API Tokens
-                                    </jet-dropdown-link>
+                                    </jet-dropdown-link> -->
 
                                     <div class="border-t border-gray-100"></div>
 
