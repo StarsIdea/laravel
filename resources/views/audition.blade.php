@@ -14,7 +14,7 @@
     <div class="container my-5 col-md-12">
         <h1 class="text-center">Audition</h1>
         <div class="col-md-4 upload-form-section">
-            <form id="audition file" method="post" action="#">
+            <form id="audition file" method="post" action="audition/upload" enctype="multipart/form-data">
                 @csrf
                 <div class="form-group">
                     <label for="name">Name:</label>
@@ -43,6 +43,15 @@
                     <label for="location">Location:</label>
                     <input type="text" class="form-control" placeholder="Enter location" id="location">
                 </div>
+                <div class="input-group">
+                        <label class="input-group-btn my-0">
+                                    <span class="btn btn-large btn-outline-primary rounded-0" id="browse">
+                                        Browse&hellip; 
+                                    <input id="video-input" type="file" multiple>
+                                    </span>
+                                </label>
+                        <input type="text" class="form-control rounded-0" readonly placeholder="Upload video">
+                </div>
                 <div class="form-group">
                     <p>Disclaimer Text box (Display text) </p>
                     <label class="form-check-label form-check">
@@ -53,4 +62,30 @@
             </form>
         </div>
     </div>
+    <script>
+    $(document).on("change", ":file", function() {
+        var input = $(this),
+        numFiles = input.get(0).files ? input.get(0).files.length : 1,
+        label = input
+            .val()
+            .replace(/\\/g, "/")
+            .replace(/.*\//, "");
+        input.trigger("fileselect", [numFiles, label]);
+        console.log(label);
+    });
+    $(document).ready(function() {
+        $(":file").on("fileselect", function(event, numFiles, label) {
+            var input = $(this)
+                .parents(".input-group")
+                .find(":text"),
+                log = numFiles > 1 ? numFiles + " files selected" : label;
+
+            if (input.length) {
+                input.val(log);
+            } else {
+                if (log) alert(log);
+            }
+        });
+    });
+    </script>
 @endsection

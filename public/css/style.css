@@ -1,3 +1,6 @@
 .upload-form-section{
     margin:auto;
 }
+#video-input {
+  display: none;
+}

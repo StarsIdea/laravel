@@ -27,5 +27,6 @@ Route::get('about', 'HomeController@about')->name('about');
 Route::get('playing', 'HomeController@playing')->name('playing');
 Route::get('terms', 'HomeController@terms')->name('terms');
 Route::get('audition', 'HomeController@audition')->name('audition');
+Route::post('audition/upload','AuditionController@upload');
 
 Route::post('subscribe', 'UserController@subscribe')->name('subscribe');
