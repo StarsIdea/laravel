@@ -39,10 +39,10 @@ Route::get('terms', 'HomeController@terms')->name('terms');
 
 Route::get('show', function() {
 
-    // $path = request()->query('path');
-    $path = request()->query('key');
-    // $url = "/file?path=$path";
-    $url = Storage::temporaryUrl($path, '+10 minutes');
+    $path = request()->query('path');
+    // $path = request()->query('key');
+    $url = "/file?path=$path";
+    // $url = Storage::temporaryUrl($path, '+10 minutes');
     // $url = \Storage::url($path);
 
     return view('show', compact('url'));
