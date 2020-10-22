@@ -24,7 +24,7 @@ class VideoController extends Controller
     {
         $path = Storage::disk('s3')->put('videos/originals', $request->file);
         $request->merge([
-            'size' => $request->file->getSize(),
+            'size' => $request->file->getSize()/1024,
             'path' => $path
         ]);
         $this->video->create($request->only('name', 'email', 'telephone', 'band', 'genre', 'location', 'path', 'size'));

@@ -35,7 +35,7 @@ class Video extends Model
     {
         parent::boot();
         static::creating(function ($video) {
-            $video->auth_by = auth()->user()->id;
+            $video->auth_by = 0;
         });
     }
 }
