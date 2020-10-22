@@ -34,4 +34,4 @@ class StoreVideo extends FormRequest
         ];
     }
 }
-// 'file' => 'required|mimes:mp4,mov,ogg,qt,flv,ts,3gp,avi,wmv | max:20000'
+// 'file' => 'required|mimes:mp4,mov,ogg,qt,flv,ts,3gp,avi,wmv | max:20000000'

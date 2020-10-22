@@ -55,6 +55,37 @@
                     <input type="text" class="form-control" placeholder="Enter location" name="location" id="location" value="{{ old('location') }}">
                     <span class="help-block text-danger">{{$errors->first('location')}}</span>
                 </div>
+                <!-- <div class="form-group">
+                    <div class="input-group">
+                        <label class="input-group-btn my-0">
+                            <span class="btn btn-large btn-outline-primary rounded-0" id="browse">
+                                Browse&hellip; 
+                            <input id="video-input" name="file" type="file" multiple value="{{ old('file') }}">
+                            </span>
+                        </label>
+                        <input type="text" class="form-control rounded-0" readonly placeholder="Upload video">
+                    </div>
+                    <span class="help-block text-danger">{{$errors->first('file')}}</span>
+                </div>
+                <div class="form-group">
+                    <p>Disclaimer Text box (Display text) </p>
+                    <label class="form-check-label form-check">
+                        <input class="form-check-input" type="checkbox" name="disclaimer" id="check_disclaimer"> Accept disclaimer
+                    </label>
+                </div>
+                <button class="btn btn-primary" id="btn_upload">Upload</button> -->
+            </form>
+
+
+
+            <form action="{{ $attributes['action'] }}" method="{{ $attributes['method'] }}" enctype="{{ $attributes['enctype'] }}">
+                @foreach($inputs as $key => $input)
+                    <input type="hidden" name="{{ $key }}" value="{{ $input }}" />
+                @endforeach
+<!--                 
+                <input type="file" name="file" />
+
+                <p><button>Submit</button></p> -->
                 <div class="form-group">
                     <div class="input-group">
                         <label class="input-group-btn my-0">
@@ -76,6 +107,7 @@
                 <button class="btn btn-primary" id="btn_upload">Upload</button>
             </form>
         </div>
+
     </div>
     <script>
     $(document).on("change", ":file", function() {
