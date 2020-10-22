@@ -13,4 +13,8 @@ class AuditionController extends Controller
     public function index() {
         return view('audition');
     }
+
+    public function audition_list(){
+        return view('images')->with('images', auth()->user()->images);
+    }
 }
