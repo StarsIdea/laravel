@@ -25,10 +25,9 @@ class VideoController extends Controller
         $path = Storage::disk('s3')->put('videos/originals', $request->file);
         $request->merge([
             'size' => $request->file->getSize(),
-            'title'=> 'test',
             'path' => $path
         ]);
-        $this->video->create($request->only('path', 'title', 'size'));
+        $this->video->create($request->only('name', 'email', 'telephone', 'band', 'genre', 'location', 'path', 'size'));
         return back()->with('success', 'Video Successfully Saved');
     }
 }
