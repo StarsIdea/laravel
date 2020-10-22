@@ -109,9 +109,10 @@
                 $('#band').val("");
             }
         });
+        $('#btn_upload').prop('disabled',true);
         $('#check_disclaimer').click(function(){
             // console.log($(this).is(":checked"));
-            $('#btn_upload').prop('disabled',$(this).is(":checked"));
+            $('#btn_upload').prop('disabled',($(this).is(":checked"))?false:true);
         });
     });
     </script>
