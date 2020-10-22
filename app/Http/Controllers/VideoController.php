@@ -20,7 +20,7 @@ class VideoController extends Controller
         return view('videos')->with('videos', auth()->user()->video);
     }
 
-    public function postUpload(Request $request)
+    public function postUpload(StoreVideo $request)
     {
         $path = Storage::disk('s3')->put('videos/originals', $request->file);
         $request->merge([

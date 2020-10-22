@@ -24,45 +24,53 @@
                 @csrf
                 <div class="form-group">
                     <label for="name">Name:</label>
-                    <input type="text" class="form-control" placeholder="Enter name" id="name">
+                    <input type="text" class="form-control" placeholder="Enter name" name="name" id="name">
+                    <span class="help-block text-danger">{{$errors->first('name')}}</span>
                 </div>
                 <div class="form-group">
                     <label for="email">Email:</label>
-                    <input type="text" class="form-control" placeholder="Enter email" id="email">
+                    <input type="text" class="form-control" placeholder="Enter email" name="email" id="email">
+                    <span class="help-block text-danger">{{$errors->first('email')}}</span>
                 </div>
                 <div class="form-group">
                     <label for="telephone">Telephone:</label>
-                    <input type="text" class="form-control" placeholder="Enter telephone" id="telephone">
+                    <input type="text" class="form-control" placeholder="Enter telephone" name="telephone" id="telephone">
+                    <span class="help-block text-danger">{{$errors->first('telephone')}}</span>
                 </div>
                 <div class="form-group">
                     <label for="band">Band / Stage Name:</label>
-                    <input type="text" class="form-control" placeholder="Enter band /stage name" id="band">
+                    <input type="text" class="form-control" placeholder="Enter band /stage name" name="band" id="band">
+                    <span class="help-block text-danger">{{$errors->first('band')}}</span>
                     <label class="form-check-label form-check">
-                        <input class="form-check-input" type="checkbox" name="check-brand"> Same as name
+                        <input class="form-check-input" type="checkbox" name="check-brand" id="check_brand"> Same as name
                     </label>
                 </div>
                 <div class="form-group">
                     <label for="genre">Genre:</label>
-                    <input type="text" class="form-control" placeholder="Enter genre" id="genre">
+                    <input type="text" class="form-control" placeholder="Enter genre" name="genre" id="genre">
+                    <span class="help-block text-danger">{{$errors->first('genre')}}</span>
                 </div>
                 <div class="form-group">
                     <label for="location">Location:</label>
-                    <input type="text" class="form-control" placeholder="Enter location" id="location">
+                    <input type="text" class="form-control" placeholder="Enter location" name="location" id="location">
+                    <span class="help-block text-danger">{{$errors->first('location')}}</span>
                 </div>
-                <div class="input-group">
+                <div class="form-group">
+                    <div class="input-group">
                         <label class="input-group-btn my-0">
-                                    <span class="btn btn-large btn-outline-primary rounded-0" id="browse">
-                                        Browse&hellip; 
-                                    <input id="video-input" name="file" type="file" multiple>
-                                    </span>
-                                    <span class="help-block text-danger">{{$errors->first('file')}}</span>
-                                </label>
+                            <span class="btn btn-large btn-outline-primary rounded-0" id="browse">
+                                Browse&hellip; 
+                            <input id="video-input" name="file" type="file" multiple>
+                            </span>
+                        </label>
                         <input type="text" class="form-control rounded-0" readonly placeholder="Upload video">
+                    </div>
+                    <span class="help-block text-danger">{{$errors->first('file')}}</span>
                 </div>
                 <div class="form-group">
                     <p>Disclaimer Text box (Display text) </p>
                     <label class="form-check-label form-check">
-                        <input class="form-check-input" type="checkbox" name="disclaimer"> Accept disclaimer
+                        <input class="form-check-input" type="checkbox" name="disclaimer" id="check_disclaimer"> Accept disclaimer
                     </label>
                 </div>
                 <button class="btn btn-primary">Upload</button>

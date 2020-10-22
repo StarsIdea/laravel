@@ -11,10 +11,10 @@ class StoreVideo extends FormRequest
      *
      * @return bool
      */
-    public function authorize()
-    {
-        return true;
-    }
+    // public function authorize()
+    // {
+    //     return true;
+    // }
 
     /**
      * Get the validation rules that apply to the request.
@@ -24,8 +24,13 @@ class StoreVideo extends FormRequest
     public function rules()
     {
         return [
-            'title' => 'required|max:250',
-            'file' => 'required|mimes:mp4,mov,ogg | max:20000'
+            'name'  => 'required|max:250',
+            'email' => 'required|max:250',
+            'telephone' => 'required|regex:/^([0-9\s\-\+\(\)]*)$/|min:10',
+            'band' => 'required|max:250',
+            'genre' => 'required|max:250',
+            'location' => 'required|max:250',
+            'file'  => 'required|mimes:mp4,mov,ogg | max:20000'
         ];
     }
 }
