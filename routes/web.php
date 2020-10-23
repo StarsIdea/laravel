@@ -54,7 +54,7 @@ Route::get('audition', function() {
     $client = $adapter->getClient();
     $bucket = $adapter->getBucket();
     $prefix = 'uploads/';
-    $acl = 'public-read';
+    $acl = 'private';
     $expires = '+10 minutes';
     $redirectUrl = url('/show');
     $formInputs = [
