@@ -56,7 +56,7 @@ Route::get('audition', function() {
     $prefix = 'uploads/';
     $acl = 'private';
     $expires = '+10 minutes';
-    $redirectUrl = url('/show');
+    $redirectUrl = url('/success');
     $formInputs = [
         'acl' => $acl,
         'key' => $prefix . '${filename}',
@@ -98,3 +98,6 @@ Route::post('subscribe', 'UserController@subscribe')->name('subscribe');
 
 Route::get('/images', 'VideoController@getImages')->name('videos');
 Route::post('/audition/upload', 'VideoController@postUpload')->name('uploadfile');
+Route::get('success',function(){
+    return view('success');
+});

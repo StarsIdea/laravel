@@ -21,8 +21,32 @@
         <script src="https://cdn.jsdelivr.net/gh/alpinejs/alpine@v2.7.0/dist/alpine.js" defer></script>
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+        <style>
+            header{
+                top: 10px;
+                right: 10px;
+                width: 100%;
+                padding: 10px 20px;
+                text-align: right;
+            }
+        </style>
     </head>
     <body>
+        <header>
+            <a class="mr-3" href="{{ route('audition') }}">Audition</a>
+            <a class="mr-3" href="{{ route('about') }}">About</a>
+            <a class="mr-3" href="{{ route('playing') }}">Playing</a>
+            @if(!Auth::check())
+                <a class="mr-3" href="{{ route('login') }}">Login</a>
+                <a class="mr-3" href="{{ route('register') }}">Register</a>
+            @else
+                <a class="mr-3" href="{{ route('dashboard') }}">{{ Auth::user()->name }}</a>
+                <form class="d-inline-block" method="POST" action="{{ route('logout') }}">
+                    @csrf
+                    <a class="mr-3" href="#" onclick="event.preventDefault(); this.closest('form').submit();">Logout</a>
+                </form>
+            @endif
+        </header>
         <div class="font-sans text-gray-900 antialiased">
             @yield('content')
         </div>

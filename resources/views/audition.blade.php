@@ -12,10 +12,44 @@
         .file-error{
             display: none;
         }
-    </style>
+        .loader {
+            border: 16px solid #f3f3f3; /* Light grey */
+            border-top: 16px solid #3498db; /* Blue */
+            border-radius: 50%;
+            width: 120px;
+            height: 120px;
+            animation: spin 2s linear infinite;
+        }
+        .loader {
+            border-top: 16px solid #3498db;
+            border-bottom: 16px solid #3498db;
+            margin-top: calc(50vh - 60px);
+            position: fixed;
+            margin-left: calc(50vw - 60px);
+            z-index: 10000;
+            display: none;
+        }
 
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        .overlay{
+            position: fixed;
+            z-index: 100;
+            background-color: #000;
+            opacity: 0.7;
+            width: 100vw;
+            height: 100vh;
+            margin-top: -3rem;
+            display: none;
+        }
+    </style>
+    <div class="loader"></div>
+    <div class="overlay"></div>
     <div class="container my-5 col-md-12">
         <h1 class="text-center">Audition</h1>
+        
         <div class="col-md-4 upload-form-section">
         @if (session('success'))
             <div class="alert alert-success alert-dismissable">
@@ -105,7 +139,10 @@
             </form>
             <span class="help-block text-danger file-error"><label id="file-error" class="error" for="file">Please select video file</label></span>
             <div class="form-group">
-                <p>Disclaimer Text box (Display text) </p>
+                <div class="disclaimer">
+                    <p class="header">Disclaimer</p>
+                    <p class="content">Lorem ipsum</p>
+                </div>
                 <label class="form-check-label form-check">
                     <input class="form-check-input" type="checkbox" name="disclaimer" id="check_disclaimer"> Accept disclaimer
                 </label>
@@ -125,7 +162,10 @@
             .replace(/.*\//, "");
         input.trigger("fileselect", [numFiles, label]);
         console.log(label);
-        $('input[name="filename"]').val(label);
+        $('input[name="filename"]').val(Date.now()+"_"+label);
+        var filename = $('input[name="key"]').val().replace("${filename}",Date.now()+"_"+"${filename}");
+        console.log(filename);
+        $('input[name="key"]').val(filename);
         if($('input[type="file"]').val()==''){
             $('.file-error').show();
         }
@@ -175,6 +215,8 @@
             if (!$form.valid()) return false;
             console.log($form.valid());
             console.log(formData)
+            $('.loader').show();
+            $('.overlay').show();
             $.ajax({
                 type: 'POST',
                 url: ajaxurl,
