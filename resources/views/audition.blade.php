@@ -58,6 +58,7 @@
                     <input type="text" class="form-control" placeholder="Enter location" name="location" id="location" value="{{ old('location') }}">
                     <span class="help-block text-danger">{{$errors->first('location')}}</span>
                 </div>
+                <input type="hidden" name="filename" value="">
                 <!-- <div class="form-group">
                     <div class="input-group">
                         <label class="input-group-btn my-0">
@@ -124,6 +125,7 @@
             .replace(/.*\//, "");
         input.trigger("fileselect", [numFiles, label]);
         console.log(label);
+        $('input[name="filename"]').val(label);
         if($('input[type="file"]').val()==''){
             $('.file-error').show();
         }
