@@ -10,7 +10,7 @@ class Video extends Model
 {
     /* Fillable */
     protected $fillable = [
-        'name', 'email', 'telephone', 'band', 'genre', 'location', 'path', 'auth_by', 'size'
+        'name', 'email', 'telephone', 'band', 'genre', 'location', 'path', 'auth_by'
     ];
     /* @array $appends */
     public $appends = ['url', 'uploaded_time', 'size_in_kb'];

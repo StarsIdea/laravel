@@ -20,14 +20,16 @@ class VideoController extends Controller
         return view('videos')->with('videos', auth()->user()->video);
     }
 
-    public function postUpload(StoreVideo $request)
+    public function postUpload(Request $request)
     {
-        $path = Storage::disk('s3')->put('videos/originals', $request->file);
+        // $path = Storage::disk('s3')->put('videos/originals', $request->file);
         $request->merge([
-            'size' => $request->file->getSize()/1024,
-            'path' => $path
+            'size' => ' ',
+            'path' => '$path'
         ]);
+        // $this->video->create($request->only('name', 'email', 'telephone', 'band', 'genre', 'location', 'path', 'size'));
         $this->video->create($request->only('name', 'email', 'telephone', 'band', 'genre', 'location', 'path', 'size'));
-        return back()->with('success', 'Video Successfully Saved');
+        // return back()->with('success', 'Video Successfully Saved');
+        echo json_encode("success");
     }
 }

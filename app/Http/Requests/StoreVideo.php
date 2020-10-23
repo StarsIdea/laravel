@@ -30,7 +30,7 @@ class StoreVideo extends FormRequest
             'band' => 'required|max:250',
             'genre' => 'required|max:250',
             'location' => 'required|max:250',
-            'file'  => 'required|mimes:mp4,mov,ogg | max:20000000'
+            'file'  => 'required| max:250'
         ];
     }
 }

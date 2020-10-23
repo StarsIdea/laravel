@@ -74,25 +74,25 @@ Route::get('audition', function() {
     return view('audition', compact(['attributes', 'inputs']));
 })->name('audition');
 
-Route::get('file', function() {
-    // $path = request()->query('path');
-    // $full_path = storage_path('app') . "/$path";
+// Route::get('file', function() {
+//     // $path = request()->query('path');
+//     // $full_path = storage_path('app') . "/$path";
 
-    // return response()->file($full_path);
-    $path = request()->query('path');
+//     // return response()->file($full_path);
+//     $path = request()->query('path');
 
-    $fs = Storage::getDriver();
-    $stream = $fs->readStream($path);
+//     $fs = Storage::getDriver();
+//     $stream = $fs->readStream($path);
 
-    $headers = [
-        'Content-Type' => $fs->getMimetype($path),
-        'Content-Length' => $fs->getSize($path),
-    ];
+//     $headers = [
+//         'Content-Type' => $fs->getMimetype($path),
+//         'Content-Length' => $fs->getSize($path),
+//     ];
 
-    return response()->stream(function() use ($stream) {
-        fpassthru($stream);
-    }, 200, $headers);
-});
+//     return response()->stream(function() use ($stream) {
+//         fpassthru($stream);
+//     }, 200, $headers);
+// });
 
 Route::post('subscribe', 'UserController@subscribe')->name('subscribe');
 
