@@ -72,7 +72,7 @@ Route::get('audition', function() {
     $attributes = $postObject->getFormAttributes();
     $inputs = $postObject->getFormInputs();
     return view('audition', compact(['attributes', 'inputs']));
-});
+})->name('audition');
 
 Route::get('file', function() {
     // $path = request()->query('path');
