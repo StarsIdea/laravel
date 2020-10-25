@@ -53,6 +53,13 @@ class RegisterController extends Controller
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
             'password' => ['required', 'string', 'min:8', 'confirmed'],
+            'city' => ['required', 'string', 'max:255'],
+            'state' => ['required', 'string', 'max:255'],
+            'zip' => ['required', 'string', 'max:255'],
+            'telephone' => ['required', 'string', 'max:255'],
+            'band' => ['required', 'string', 'max:255'],
+            'genre' => ['required', 'string', 'max:255'],
+            'location' => ['required', 'string', 'max:255'],
         ]);
     }
 
@@ -68,6 +75,21 @@ class RegisterController extends Controller
             'name' => $data['name'],
             'email' => $data['email'],
             'password' => Hash::make($data['password']),
+            'city' => $data['city'],
+            'state' => $data['state'],
+            'zip' => $data['zip'],
+            'telephone' => $data['telephone'],
+            'band' => $data['band'],
+            'genre' => $data['genre'],
+            'location' => $data['location'],
+            'photo' => $data['photo'],
+            'website' => $data['website'],
+            'facebook' => $data['facebook'],
+            'instagram' => $data['instagram'],
+            'twitter' => $data['twitter'],
+            'paypal' => $data['paypal'],
+            'venmo' => $data['venmo'],
+            'cashapp' => $data['cashapp'],
         ]);
     }
 }

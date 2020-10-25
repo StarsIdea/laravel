@@ -16,3 +16,6 @@
 .disclaimer .content{
   font-size: 14px;
 }
+#frm_register .address{
+  display: flex;
+}
