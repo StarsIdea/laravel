@@ -22,3 +22,6 @@
 .file-error{
   display: none;
 }
+label.error{
+  color: red;
+}
