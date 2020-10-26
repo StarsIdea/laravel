@@ -9,6 +9,12 @@ use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 
+use Illuminate\Support\Facades\Storage;
+use Aws\S3\PostObjectV4;
+
+use Illuminate\Auth\Events\Registered;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
 class RegisterController extends Controller
 {
     /*
@@ -71,6 +77,8 @@ class RegisterController extends Controller
      */
     protected function create(array $data)
     {
+        // $path = Storage::disk('s3')->put('avatar/originals', $request->file);
+        $path  = '/avatar/'.$data['photo'];
         return User::create([
             'name' => $data['name'],
             'email' => $data['email'],
@@ -82,7 +90,7 @@ class RegisterController extends Controller
             'band' => $data['band'],
             'genre' => $data['genre'],
             'location' => $data['location'],
-            'photo' => $data['photo'],
+            'photo' => $path,
             'website' => $data['website'],
             'facebook' => $data['facebook'],
             'instagram' => $data['instagram'],
@@ -91,5 +99,46 @@ class RegisterController extends Controller
             'venmo' => $data['venmo'],
             'cashapp' => $data['cashapp'],
         ]);
+    }
+
+    public function showRegistrationForm()
+    {
+        $adapter = Storage::getAdapter();
+        $client = $adapter->getClient();
+        $bucket = $adapter->getBucket();
+        $prefix = 'avatars/';
+        $acl = 'private';
+        $expires = '+10 minutes';
+        $redirectUrl = url('/login');
+        $formInputs = [
+            'acl' => $acl,
+            'key' => $prefix . '${filename}',
+            'success_action_redirect' => $redirectUrl,
+        ];
+        $options = [
+            ['acl' => $acl],
+            ['bucket' => $bucket],
+            ['starts-with', '$key', $prefix],
+            ['eq', '$success_action_redirect', $redirectUrl],
+        ];
+        $postObject = new PostObjectV4($client, $bucket, $formInputs, $options, $expires);
+        $attributes = $postObject->getFormAttributes();
+        $inputs = $postObject->getFormInputs();
+        return view('auth.register', compact(['attributes', 'inputs']));
+    }
+    public function register(Request $request){
+        $this->validator($request->all())->validate();
+
+        event(new Registered($user = $this->create($request->all())));
+
+        $this->guard()->login($user);
+
+        if ($response = $this->registered($request, $user)) {
+            return $response;
+        }
+
+        return $request->wantsJson()
+                    ? new JsonResponse([], 201)
+                    : redirect($this->redirectPath());
     }
 }

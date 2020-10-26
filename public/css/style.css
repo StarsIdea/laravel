@@ -19,3 +19,6 @@
 #frm_register .address{
   display: flex;
 }
+.file-error{
+  display: none;
+}

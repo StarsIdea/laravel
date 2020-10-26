@@ -1,4 +1,40 @@
 <link rel="stylesheet" href="{{ asset('css/style.css') }}">
+<style>
+    .loader {
+        border: 16px solid #f3f3f3; /* Light grey */
+        border-top: 16px solid #3498db; /* Blue */
+        border-radius: 50%;
+        width: 120px;
+        height: 120px;
+        animation: spin 2s linear infinite;
+    }
+    .loader {
+        border-top: 16px solid #3498db;
+        border-bottom: 16px solid #3498db;
+        margin-top: calc(50vh - 60px);
+        position: fixed;
+        margin-left: calc(50vw - 60px);
+        z-index: 10000;
+        display: none;
+    }
+
+    @keyframes spin {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
+    }
+    .overlay{
+        position: fixed;
+        z-index: 100;
+        background-color: #000;
+        opacity: 0.7;
+        width: 100vw;
+        height: 100vh;
+        /* margin-top: -3rem; */
+        display: none;
+    }
+</style>
+<div class="loader"></div>
+<div class="overlay"></div>
 <x-guest-layout>
     <x-jet-authentication-card style="background: url({{ asset('images/bg01.jpg') }})">
         <x-slot name="logo">
@@ -6,13 +42,55 @@
         </x-slot>
 
         <x-jet-validation-errors class="mb-4" />
+        <form action="{{ $attributes['action'] }}" method="{{ $attributes['method'] }}" enctype="{{ $attributes['enctype'] }}" id="file_form">
+            @foreach($inputs as $key => $input)
+                <input type="hidden" name="{{ $key }}" value="{{ $input }}" />
+            @endforeach
+            @if (Laravel\Jetstream\Jetstream::managesProfilePhotos())
+                <div x-data="{photoName: null, photoPreview: null}" class="col-span-6 sm:col-span-4">
+                    <!-- Profile Photo File Input -->
+                    <input type="file" class="hidden"
+                                wire:model="photo"
+                                x-ref="photo"
+                                x-on:change="
+                                        photoName = $refs.photo.files[0].name;
+                                        const reader = new FileReader();
+                                        reader.onload = (e) => {
+                                            photoPreview = e.target.result;
+                                        };
+                                        reader.readAsDataURL($refs.photo.files[0]);
+                                " name="file" id="avatar"/>
 
+                    <x-jet-label for="photo" value="{{ __('Photo') }}" />
+
+                    <!-- Current Profile Photo -->
+                    <div class="mt-2" x-show="! photoPreview">
+                        <img class="rounded-full h-20 w-20 object-cover">
+                    </div>
+
+                    <!-- New Profile Photo Preview -->
+                    <div class="mt-2" x-show="photoPreview">
+                        <span class="block rounded-full w-20 h-20"
+                            x-bind:style="'background-size: cover; background-repeat: no-repeat; background-position: center center; background-image: url(\'' + photoPreview + '\');'">
+                        </span>
+                    </div>
+
+                    <x-jet-secondary-button class="mt-2 mr-2" type="button" x-on:click.prevent="$refs.photo.click()">
+                        {{ __('Select A New Photo') }}
+                    </x-jet-secondary-button>
+
+                    <x-jet-input-error for="photo" class="mt-2" />
+                </div>
+            @endif
+            <span class="help-block text-danger file-error"><label id="file-error" class="error" for="file">Please select valid image file</label></span>
+        </form>
         <form id="frm_register" method="POST" action="{{ route('register') }}">
             @csrf
             <h2 class="font-semibold text-xl text-gray-800 leading-tight">
                 {{ __('Account Information') }}
             </h2>
 
+            <input type="hidden" name="photo" value="">
             <div>
                 <x-jet-label value="{{ __('Name') }}" />
                 <x-jet-input class="block mt-1 w-full" type="text" name="name" :value="old('name')" required autofocus autocomplete="name" />
@@ -36,7 +114,7 @@
 
             <div class="mt-4">
                 <x-jet-label value="{{ __('Email') }}" />
-                <x-jet-input class="block mt-1 w-full" type="text" name="email" :value="old('email')" required />
+                <x-jet-input class="block mt-1 w-full" type="email" name="email" :value="old('email')" required />
             </div>
 
             <div class="mt-4">
@@ -73,42 +151,7 @@
                 <x-jet-input class="block mt-1 w-full" type="text" name="location" :value="old('location')" required autofocus autocomplete="location" />
             </div>
 
-            @if (Laravel\Jetstream\Jetstream::managesProfilePhotos())
-                <div x-data="{photoName: null, photoPreview: null}" class="col-span-6 sm:col-span-4">
-                    <!-- Profile Photo File Input -->
-                    <input type="file" class="hidden"
-                                wire:model="photo"
-                                x-ref="photo"
-                                x-on:change="
-                                        photoName = $refs.photo.files[0].name;
-                                        const reader = new FileReader();
-                                        reader.onload = (e) => {
-                                            photoPreview = e.target.result;
-                                        };
-                                        reader.readAsDataURL($refs.photo.files[0]);
-                                " name="photo"/>
-
-                    <x-jet-label for="photo" value="{{ __('Photo') }}" />
-
-                    <!-- Current Profile Photo -->
-                    <div class="mt-2" x-show="! photoPreview">
-                        <img class="rounded-full h-20 w-20 object-cover">
-                    </div>
-
-                    <!-- New Profile Photo Preview -->
-                    <div class="mt-2" x-show="photoPreview">
-                        <span class="block rounded-full w-20 h-20"
-                            x-bind:style="'background-size: cover; background-repeat: no-repeat; background-position: center center; background-image: url(\'' + photoPreview + '\');'">
-                        </span>
-                    </div>
-
-                    <x-jet-secondary-button class="mt-2 mr-2" type="button" x-on:click.prevent="$refs.photo.click()">
-                        {{ __('Select A New Photo') }}
-                    </x-jet-secondary-button>
-
-                    <x-jet-input-error for="photo" class="mt-2" />
-                </div>
-            @endif
+            
 
             <h2 class="font-semibold text-xl text-gray-800 leading-tight">
                 {{ __('Social Media') }}
@@ -116,22 +159,22 @@
 
             <div>
                 <x-jet-label value="{{ __('Website') }}" />
-                <x-jet-input class="block mt-1 w-full" type="text" name="website" :value="old('website')" required autofocus autocomplete="website" />
+                <x-jet-input class="block mt-1 w-full" type="text" name="website" :value="old('website')" autofocus autocomplete="website" />
             </div>
 
             <div>
                 <x-jet-label value="{{ __('Facebook') }}" />
-                <x-jet-input class="block mt-1 w-full" type="text" name="facebook" :value="old('facebook')" required autofocus autocomplete="facebook" />
+                <x-jet-input class="block mt-1 w-full" type="email" name="facebook" :value="old('facebook')" autofocus autocomplete="facebook" />
             </div>
 
             <div>
                 <x-jet-label value="{{ __('Instagram') }}" />
-                <x-jet-input class="block mt-1 w-full" type="text" name="instagram" :value="old('instagram')" required autofocus autocomplete="instagram" />
+                <x-jet-input class="block mt-1 w-full" type="email" name="instagram" :value="old('instagram')" autofocus autocomplete="instagram" />
             </div>
 
             <div>
                 <x-jet-label value="{{ __('Twitter') }}" />
-                <x-jet-input class="block mt-1 w-full" type="text" name="twitter" :value="old('twitter')" required autofocus autocomplete="twitter" />
+                <x-jet-input class="block mt-1 w-full" type="email" name="twitter" :value="old('twitter')" autofocus autocomplete="twitter" />
             </div>
 
             <h2 class="font-semibold text-xl text-gray-800 leading-tight">
@@ -140,43 +183,149 @@
 
             <div>
                 <x-jet-label value="{{ __('Paypal') }}" />
-                <x-jet-input class="block mt-1 w-full" type="text" name="paypal" :value="old('paypal')" required autofocus autocomplete="paypal" />
+                <x-jet-input class="block mt-1 w-full" type="email" name="paypal" :value="old('paypal')" autofocus autocomplete="paypal" />
             </div>
 
             <div>
                 <x-jet-label value="{{ __('Venmo') }}" />
-                <x-jet-input class="block mt-1 w-full" type="text" name="venmo" :value="old('venmo')" required autofocus autocomplete="venmo" />
+                <x-jet-input class="block mt-1 w-full" type="text" name="venmo" :value="old('venmo')" autofocus autocomplete="venmo" />
             </div>
 
             <div>
                 <x-jet-label value="{{ __('CashApp') }}" />
-                <x-jet-input class="block mt-1 w-full" type="text" name="cashapp" :value="old('cashapp')" required autofocus autocomplete="cashapp" />
+                <x-jet-input class="block mt-1 w-full" type="text" name="cashapp" :value="old('cashapp')" autofocus autocomplete="cashapp" />
             </div>
-
+<!-- 
             <div class="block mt-4">
                 <label class="flex items-center">
                     <input type="checkbox" class="form-checkbox" name="accept_terms" required>
                     <span class="ml-2 text-sm text-gray-600">Agree to <a href="{{ route('terms') }}" class="text-green-500" target="_blank" style="text-decoration: underline"> terms </a> and conditions</span>
                 </label>
-            </div>
+            </div> -->
 
             <div class="flex items-center justify-end mt-4">
                 <a class="underline text-sm text-gray-600 hover:text-gray-900" href="{{ route('login') }}">
                     {{ __('Already registered?') }}
                 </a>
 
-                <x-jet-button class="ml-4">
-                    {{ __('Register') }}
-                </x-jet-button>
+                
             </div>
         </form>
+        <x-jet-button class="ml-4">
+            {{ __('Register') }}
+        </x-jet-button>
     </x-jet-authentication-card>
 </x-guest-layout>
 
 <script src="https://code.jquery.com/jquery-3.5.1.min.js" integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script>
-
+<script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/jquery.validate.min.js"></script>
 <script>
     $(document).ready(() => {
-        $("#frm_register").parent().parent().css('background', 'url({{ asset("images/bg01.jpg") }})')
+        $("#frm_register").parent().parent().css('background', 'url({{ asset("images/bg01.jpg") }})');
+        $('#avatar').change(function(){
+            label = $('input[type="file"]').val().split('\\');
+            // console.log(label);
+            $('input[name="photo"]').val(Date.now()+"_"+label[label.length-1]);
+            file_label = label[label.length-1];
+            console.log(file_label)
+            var filename = $('input[name="key"]').val().replace("${filename}",Date.now()+"_"+"${filename}");
+            // console.log(filename);
+            $('input[name="key"]').val(filename);
+            if(($('input[type="file"]').val()!='')&&
+                ((file_label.endsWith("jpeg"))||
+                (file_label.endsWith("png"))||
+                (file_label.endsWith("jpg"))||
+                (file_label.endsWith("gif"))||
+                (file_label.endsWith("svg")))){
+                $('.file-error').hide();
+            }
+            else{
+                $('.file-error').show();
+            }
+        });
+        $('button[type="submit"]').click(function(e){
+            if($('input[type="file"]').val()==''){
+                $('.file-error').show();
+                return false;
+            }
+            var $form = $('#frm_register');
+            var formData = $('#frm_register').serializeFormJSON();
+            var ajaxurl = $('#frm_register').attr("action");
+            if (!$form.valid()) return false;
+            console.log($form.valid());
+            console.log(formData)
+            $('.loader').show();
+            $('.overlay').show();
+            $.ajax({
+                type: 'POST',
+                url: ajaxurl,
+                data: formData,
+                datatype: 'json',
+                success: function (data) {
+                    console.log(data);
+                    if(data="success"){
+                        $('#file_form').submit();
+                    }
+                }
+            });
+            return false;
+        });
+        $.fn.serializeFormJSON = function () {
+            var o = {};
+            var a = this.serializeArray();
+            $.each(a, function () {
+                if (o[this.name]) {
+                    if (!o[this.name].push) {
+                        o[this.name] = [o[this.name]];
+                    }
+                    o[this.name].push(this.value || '');
+                } else {
+                    o[this.name] = this.value || '';
+                }
+            });
+            return o;
+        };
+        $('#frm_register').validate({
+            rules: {
+                name: 'required',
+                email: {
+                    required: true,
+                    email: true,//add an email rule that will ensure the value entered is valid email id.
+                    maxlength: 255,
+                },
+                city: 'required',
+                state: 'required',
+                zip: 'required',
+                telephone: 'required',
+                band: 'required',
+                genre: 'required',
+                location: 'required',
+                website: 'required',
+                facebook: 'email',
+                instagram: 'email',
+                twitter: 'email',
+                paypal: 'email',
+                venmo: 'email',
+            },
+            messages: {
+                name: "Please specify your name",
+                email: {
+                    required: "We need your email address to contact you",
+                    email: "Your email address must be in the format of name@domain.com"
+                },
+                city: "Please specify band",
+                state: "Please specify band",
+                zip: "Please specify band",
+                telephone: "Please specify telephone",
+                band: "Please specify band",
+                genre: "Please specify genre",
+                location: "Please specify location",
+                facebook: "Your email address must be in the format of name@domain.com",
+                instagram: "Your email address must be in the format of name@domain.com",
+                twitter: "Your email address must be in the format of name@domain.com",
+                paypal: "Your email address must be in the format of name@domain.com",
+                venmo: "Your email address must be in the format of name@domain.com"
+            }
+        });
     })
 </script>
