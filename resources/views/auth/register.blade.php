@@ -307,9 +307,9 @@
                     required: "We need your email address to contact you",
                     email: "Your email address must be in the format of name@domain.com"
                 },
-                city: "Please specify band",
-                state: "Please specify band",
-                zip: "Please specify band",
+                city: "Please specify city",
+                state: "Please specify state",
+                zip: "Please specify zip",
                 telephone: "Please specify telephone",
                 band: "Please specify band",
                 genre: "Please specify genre",
