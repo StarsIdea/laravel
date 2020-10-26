@@ -299,13 +299,7 @@
                 telephone: 'required',
                 band: 'required',
                 genre: 'required',
-                location: 'required',
-                website: 'required',
-                facebook: 'email',
-                instagram: 'email',
-                twitter: 'email',
-                paypal: 'email',
-                venmo: 'email',
+                location: 'required'
             },
             messages: {
                 name: "Please specify your name",
@@ -319,12 +313,7 @@
                 telephone: "Please specify telephone",
                 band: "Please specify band",
                 genre: "Please specify genre",
-                location: "Please specify location",
-                facebook: "Your email address must be in the format of name@domain.com",
-                instagram: "Your email address must be in the format of name@domain.com",
-                twitter: "Your email address must be in the format of name@domain.com",
-                paypal: "Your email address must be in the format of name@domain.com",
-                venmo: "Your email address must be in the format of name@domain.com"
+                location: "Please specify location"
             }
         });
     })
