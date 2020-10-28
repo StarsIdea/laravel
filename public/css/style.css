@@ -25,3 +25,22 @@
 label.error{
   color: red;
 }
+form#frm_register input[type="radio"]{
+  padding: .5rem;
+  border-radius: 50px;
+  margin: 10px 0px;
+}
+form#frm_register input[type="radio"].active{
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(164,202,254,.45);
+  border-color: #a4cafe;
+  background-color: #a4cafe;
+}
+.user-type{
+  display: flex;
+}
+.user-type span{
+  line-height: 38px;
+  margin-left: 20px;
+  cursor: pointer;
+}

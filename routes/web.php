@@ -101,3 +101,6 @@ Route::post('/audition/upload', 'VideoController@postUpload')->name('uploadfile'
 Route::get('success',function(){
     return view('success');
 });
+Route::get('/userType',function(){
+    return view('/auth/userType');
+})->name('userType');

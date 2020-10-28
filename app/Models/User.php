@@ -41,7 +41,9 @@ class User extends Authenticatable
         'twitter',
         'paypal',
         'venmo',
-        'cashapp'
+        'cashapp',
+        'allowed',
+        'userType'
     ];
 
     /**

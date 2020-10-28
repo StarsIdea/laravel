@@ -38,7 +38,7 @@
             <a class="mr-3" href="{{ route('playing') }}">Playing</a>
             @if(!Auth::check())
                 <a class="mr-3" href="{{ route('login') }}">Login</a>
-                <a class="mr-3" href="{{ route('register') }}">Register</a>
+                <a class="mr-3" href="{{ route('userType') }}">Register</a>
             @else
                 <a class="mr-3" href="{{ route('dashboard') }}">{{ Auth::user()->name }}</a>
                 <form class="d-inline-block" method="POST" action="{{ route('logout') }}">

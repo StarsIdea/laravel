@@ -89,11 +89,16 @@
             <h2 class="font-semibold text-xl text-gray-800 leading-tight">
                 {{ __('Account Information') }}
             </h2>
-
             <input type="hidden" name="photo" value="">
+            <input type="hidden" name="userType" value="{{ $userType }}">
             <div>
+                @if($userType == "talent")
                 <x-jet-label value="{{ __('Name') }}" />
                 <x-jet-input class="block mt-1 w-full" type="text" name="name" :value="old('name')" required autofocus autocomplete="name" />
+                @elseif ($userType == "venue")
+                <x-jet-label value="{{ __('Contact Name') }}" />
+                <x-jet-input class="block mt-1 w-full" type="text" name="contactName" :value="old('contactName')" required autofocus autocomplete="contactName" />
+                @endif
             </div>
 
             <div class="mt-4 address">
@@ -133,12 +138,21 @@
             </div>
 
             <h2 class="font-semibold text-xl text-gray-800 leading-tight">
+                @if($userType == "talent")
                 {{ __('Talent Info') }}
+                @elseif($userType == "venue")
+                {{ __('Venue Info') }}
+                @endif
             </h2>
 
             <div>
+                @if($userType == "talent")
                 <x-jet-label value="{{ __('Band / Stage Name') }}" />
                 <x-jet-input class="block mt-1 w-full" type="text" name="band" :value="old('band')" required autofocus autocomplete="band" />
+                @elseif($userType == "venue")
+                <x-jet-label value="{{ __('Venue Name') }}" />
+                <x-jet-input class="block mt-1 w-full" type="text" name="venueName" :value="old('venueName')" required autofocus autocomplete="venueName" />
+                @endif
             </div>
 
             <div>
@@ -176,7 +190,7 @@
                 <x-jet-label value="{{ __('Twitter') }}" />
                 <x-jet-input class="block mt-1 w-full" type="email" name="twitter" :value="old('twitter')" autofocus autocomplete="twitter" />
             </div>
-
+            @if($userType == "talent")
             <h2 class="font-semibold text-xl text-gray-800 leading-tight">
                 {{ __('Tips') }}
             </h2>
@@ -195,13 +209,9 @@
                 <x-jet-label value="{{ __('CashApp') }}" />
                 <x-jet-input class="block mt-1 w-full" type="text" name="cashapp" :value="old('cashapp')" autofocus autocomplete="cashapp" />
             </div>
-<!-- 
-            <div class="block mt-4">
-                <label class="flex items-center">
-                    <input type="checkbox" class="form-checkbox" name="accept_terms" required>
-                    <span class="ml-2 text-sm text-gray-600">Agree to <a href="{{ route('terms') }}" class="text-green-500" target="_blank" style="text-decoration: underline"> terms </a> and conditions</span>
-                </label>
-            </div> -->
+            @endif
+            
+
 
             <div class="flex items-center justify-end mt-4">
                 <a class="underline text-sm text-gray-600 hover:text-gray-900" href="{{ route('login') }}">

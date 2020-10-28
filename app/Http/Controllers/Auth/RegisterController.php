@@ -79,15 +79,23 @@ class RegisterController extends Controller
     {
         // $path = Storage::disk('s3')->put('avatar/originals', $request->file);
         $path  = '/avatar/'.$data['photo'];
+        if($data['userType'] == "talent"){
+            $name = $data['name'];
+            $band = $data['band'];
+        }
+        else if($data['userType'] == "venue"){
+            $name = $data['contactName'];
+            $band = $data['venueName'];
+        }
         return User::create([
-            'name' => $data['name'],
+            'name' => $name,
             'email' => $data['email'],
             'password' => Hash::make($data['password']),
             'city' => $data['city'],
             'state' => $data['state'],
             'zip' => $data['zip'],
             'telephone' => $data['telephone'],
-            'band' => $data['band'],
+            'band' => $band,
             'genre' => $data['genre'],
             'location' => $data['location'],
             'photo' => $path,
@@ -98,10 +106,12 @@ class RegisterController extends Controller
             'paypal' => $data['paypal'],
             'venmo' => $data['venmo'],
             'cashapp' => $data['cashapp'],
+            'allowed' => $data['allowed'],
+            'userType' => $data['userType'],
         ]);
     }
 
-    public function showRegistrationForm()
+    public function showRegistrationForm(Request $request)
     {
         $adapter = Storage::getAdapter();
         $client = $adapter->getClient();
@@ -124,26 +134,53 @@ class RegisterController extends Controller
         $postObject = new PostObjectV4($client, $bucket, $formInputs, $options, $expires);
         $attributes = $postObject->getFormAttributes();
         $inputs = $postObject->getFormInputs();
-        return view('auth.register', compact(['attributes', 'inputs']));
+        $userType = $request->input('userType');
+        return view('auth.register', compact(['attributes', 'inputs', 'userType']));
     }
     public function register(Request $request){
         // $validator = $this->validator($request->all())->validate();
-        $validator = Validator::make($request->all(), [
-            'name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
-            'password' => ['required', 'string', 'min:8', 'confirmed'],
-            'city' => ['required', 'string', 'max:255'],
-            'state' => ['required', 'string', 'max:255'],
-            'zip' => ['required', 'string', 'max:255'],
-            'telephone' => ['required', 'string', 'max:255'],
-            'band' => ['required', 'string', 'max:255'],
-            'genre' => ['required', 'string', 'max:255'],
-            'location' => ['required', 'string', 'max:255'],
-        ]);
+        $userType = $request->input('userType');
+        if($userType == "talent"){
+            $validator = Validator::make($request->all(), [
+                'name' => ['required', 'string', 'max:255'],
+                'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
+                'password' => ['required', 'string', 'min:8', 'confirmed'],
+                'city' => ['required', 'string', 'max:255'],
+                'state' => ['required', 'string', 'max:255'],
+                'zip' => ['required', 'string', 'max:255'],
+                'telephone' => ['required', 'string', 'max:255'],
+                'band' => ['required', 'string', 'max:255'],
+                'genre' => ['required', 'string', 'max:255'],
+                'location' => ['required', 'string', 'max:255'],
+            ]);
+            $request->merge([
+                'allowed' => false
+            ]);
+        }
+        else if($userType == "venue"){
+            $validator = Validator::make($request->all(), [
+                'contactName' => ['required', 'string', 'max:255'],
+                'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
+                'password' => ['required', 'string', 'min:8', 'confirmed'],
+                'city' => ['required', 'string', 'max:255'],
+                'state' => ['required', 'string', 'max:255'],
+                'zip' => ['required', 'string', 'max:255'],
+                'telephone' => ['required', 'string', 'max:255'],
+                'venueName' => ['required', 'string', 'max:255'],
+                'genre' => ['required', 'string', 'max:255'],
+                'location' => ['required', 'string', 'max:255'],
+            ]);
+            $request->merge([
+                'paypal' => '',
+                'venmo' => '',
+                'cashapp' => '',
+                'allowed' => false
+            ]);
+        }
         if($validator->fails()){
             return response()->json($validator->errors()->toJson(), 200);
         }
-
+        
         event(new Registered($user = $this->create($request->all())));
         echo json_encode("success");
 
