@@ -109,7 +109,7 @@ class RegisterController extends Controller
         $prefix = 'avatars/';
         $acl = 'private';
         $expires = '+10 minutes';
-        $redirectUrl = url('/login');
+        $redirectUrl = url('/success');
         $formInputs = [
             'acl' => $acl,
             'key' => $prefix . '${filename}',
@@ -127,18 +127,34 @@ class RegisterController extends Controller
         return view('auth.register', compact(['attributes', 'inputs']));
     }
     public function register(Request $request){
-        $this->validator($request->all())->validate();
-
-        event(new Registered($user = $this->create($request->all())));
-
-        $this->guard()->login($user);
-
-        if ($response = $this->registered($request, $user)) {
-            return $response;
+        // $validator = $this->validator($request->all())->validate();
+        $validator = Validator::make($request->all(), [
+            'name' => ['required', 'string', 'max:255'],
+            'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
+            'password' => ['required', 'string', 'min:8', 'confirmed'],
+            'city' => ['required', 'string', 'max:255'],
+            'state' => ['required', 'string', 'max:255'],
+            'zip' => ['required', 'string', 'max:255'],
+            'telephone' => ['required', 'string', 'max:255'],
+            'band' => ['required', 'string', 'max:255'],
+            'genre' => ['required', 'string', 'max:255'],
+            'location' => ['required', 'string', 'max:255'],
+        ]);
+        if($validator->fails()){
+            return response()->json($validator->errors()->toJson(), 200);
         }
 
-        return $request->wantsJson()
-                    ? new JsonResponse([], 201)
-                    : redirect($this->redirectPath());
+        event(new Registered($user = $this->create($request->all())));
+        echo json_encode("success");
+
+        // $this->guard()->login($user);
+
+        // if ($response = $this->registered($request, $user)) {
+        //     return $response;
+        // }
+
+        // return $request->wantsJson()
+        //             ? new JsonResponse([], 201)
+        //             : redirect($this->redirectPath());
     }
 }

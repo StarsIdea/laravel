@@ -207,8 +207,6 @@
                 <a class="underline text-sm text-gray-600 hover:text-gray-900" href="{{ route('login') }}">
                     {{ __('Already registered?') }}
                 </a>
-
-                
             </div>
         </form>
         <x-jet-button class="ml-4">
@@ -262,9 +260,20 @@
                 data: formData,
                 datatype: 'json',
                 success: function (data) {
-                    console.log(data);
-                    if(data="success"){
+                    data = JSON.parse(data);
+                    if(data=="success"){
                         $('#file_form').submit();
+                    }
+                    else{
+                        for(var i in data){
+                            var key = i;
+                            var val = data[i];
+                            if(i == "email"){
+                                alert(data["email"]);
+                            }
+                        }
+                        $('.loader').hide();
+                        $('.overlay').hide();
                     }
                 }
             });
