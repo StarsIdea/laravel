@@ -141,3 +141,4 @@ Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 Route::get('/verify','Auth\RegisterController@verifyUser')->name('verify.user');
+Route::get('/admin/allow/{id}','AdminController@allowed');

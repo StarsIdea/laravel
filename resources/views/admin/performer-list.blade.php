@@ -19,6 +19,7 @@
                                 <th>band</th>
                                 <th>genre</th>
                                 <th>location</th>
+                                <th>email verified</th>
                                 <th>Allowed</th>
                                 <th>Allow</th>
                             </thead>
@@ -32,6 +33,13 @@
                                     <td>{{ $user->genre }}</td>
                                     <td>{{ $user->location }}</td>
                                     <td>
+                                        @if($user->is_verified)
+                                            <i class="fa fa-check"></i>
+                                        @else
+                                            <i class="fa fa-minus"></i>
+                                        @endif
+                                    </td>
+                                    <td>
                                         @if($user->allowed)
                                             <i class="fa fa-check"></i>
                                         @else
@@ -39,7 +47,7 @@
                                         @endif
                                     </td>
                                     <td>
-                                        <a class="btn" href="/allow/{{ $user->id }}" target="_blank">
+                                        <a class="btn" href="/admin/allow/{{ $user->id }}" target="_blank">
                                             <x-jet-button class="ml-4">Allow
                                             </x-jet-button>
                                         </a>
