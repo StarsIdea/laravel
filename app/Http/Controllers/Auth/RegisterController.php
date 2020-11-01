@@ -15,6 +15,7 @@ use Aws\S3\PostObjectV4;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use App\Http\Controllers\MailController;
 class RegisterController extends Controller
 {
     /*
@@ -91,6 +92,7 @@ class RegisterController extends Controller
             'name' => $name,
             'email' => $data['email'],
             'password' => Hash::make($data['password']),
+            'verification_code' => sha1(time()),
             'city' => $data['city'],
             'state' => $data['state'],
             'zip' => $data['zip'],
@@ -119,7 +121,7 @@ class RegisterController extends Controller
         $prefix = 'avatars/';
         $acl = 'private';
         $expires = '+10 minutes';
-        $redirectUrl = url('/success');
+        $redirectUrl = url('/success?mode=register');
         $formInputs = [
             'acl' => $acl,
             'key' => $prefix . '${filename}',
@@ -182,16 +184,31 @@ class RegisterController extends Controller
         }
         
         event(new Registered($user = $this->create($request->all())));
-        echo json_encode("success");
 
-        // $this->guard()->login($user);
+        if($user != null){
+            $result = MailController::sendSignupEmail($request, $user->name, $user->email, $user->verification_code);
+            if($result){
+                echo json_encode("success");
+            }
+            else{
+                echo json_encode("something went wrong");
+                // echo json_encode($result);
+            }
+            // echo json_encode($result);
+        }
+        else{
+            echo json_encode("something went wrong");
+        }
+    }
 
-        // if ($response = $this->registered($request, $user)) {
-        //     return $response;
-        // }
-
-        // return $request->wantsJson()
-        //             ? new JsonResponse([], 201)
-        //             : redirect($this->redirectPath());
+    public function verifyUser(Request $request){
+        $verification_code = $request->input('code');
+        $user = User::where(['verification_code' => $verification_code])->first();
+        if($user != null){
+            $user->is_verified = 1;
+            $user->save();
+            return redirect()->route('login')->with(session()->flash('alert-success', 'Your account is verified. Please login!'));
+        }
+        return redirect()->route('login')->with(session()->flash('alert-danger', 'Invalid verification code!'));
     }
 }

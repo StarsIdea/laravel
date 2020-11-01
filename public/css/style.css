@@ -44,3 +44,34 @@ form#frm_register input[type="radio"].active{
   margin-left: 20px;
   cursor: pointer;
 }
+table {
+  font-family: arial, sans-serif;
+  border-collapse: collapse;
+  width: 100%;
+}
+
+td, th {
+  border: 1px solid #dddddd;
+  text-align: left;
+  padding: 8px;
+  text-transform: capitalize;
+}
+.dashboard .category{
+  max-width: 500px;
+  margin: auto;
+  text-align: center;
+  background-color: #999;
+  border-radius: 10px;
+  margin-bottom: 20px;
+}
+
+.dashboard .category a{
+  padding: 50px;
+  display: block;
+}
+i.fa-minus{
+  color: red;
+}
+i.fa-check{
+  color: green;
+}

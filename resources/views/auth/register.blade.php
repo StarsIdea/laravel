@@ -270,6 +270,7 @@
                 data: formData,
                 datatype: 'json',
                 success: function (data) {
+                    console.log(data);
                     data = JSON.parse(data);
                     if(data=="success"){
                         $('#file_form').submit();

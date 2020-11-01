@@ -43,7 +43,9 @@ class User extends Authenticatable
         'venmo',
         'cashapp',
         'allowed',
-        'userType'
+        'userType',
+        'verification_code',
+        'is_verified'
     ];
 
     /**

@@ -1,6 +1,8 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use Illuminate\Foundation\Auth\EmailVerificationRequest;
+use Illuminate\Http\Request;
 use Aws\S3\PostObjectV4;
 /*
 |--------------------------------------------------------------------------
@@ -13,14 +15,34 @@ use Aws\S3\PostObjectV4;
 |
 */
 Auth::routes();
+// Auth::routes(['verify' => true]);
+Route::get('/email/verify', function () {
+    return view('auth.verify-email');
+})->middleware(['auth'])->name('verification.notice');
+
+Route::get('/email/verify/{id}/{hash}', function (EmailVerificationRequest $request) {
+    $request->fulfill();
+
+    return redirect('/home');
+})->middleware(['auth', 'signed'])->name('verification.verify');
+
+Route::post('/email/verification-notification', function (Request $request) {
+    $request->user()->sendEmailVerificationNotification();
+
+    return back()->with('status', 'verification-link-sent');
+})->middleware(['auth', 'throttle:6,1'])->name('verification.send');
 
 Route::get('/', function () {
     session('redirectTo', 'home');
     return view('home');
 });
 
+// Route::get('profile', function(){
+
+// })->middleware('verified');
+
 Route::middleware(['auth:sanctum', 'verified'])->group(function () {
-    Route::get('dashboard', 'UserController@dashboard')->name('dashboard');
+    Route::get('dashboard', 'UserController@dashboard')->name('dashboard')->middleware('verified');
 });
 
 Route::post('login', 'LoginController@authenticate')->name('login');
@@ -56,7 +78,7 @@ Route::get('audition', function() {
     $prefix = 'uploads/';
     $acl = 'private';
     $expires = '+10 minutes';
-    $redirectUrl = url('/success');
+    $redirectUrl = url('/success?mode=upload');
     $formInputs = [
         'acl' => $acl,
         'key' => $prefix . '${filename}',
@@ -98,9 +120,24 @@ Route::post('subscribe', 'UserController@subscribe')->name('subscribe');
 
 Route::get('/images', 'VideoController@getImages')->name('videos');
 Route::post('/audition/upload', 'VideoController@postUpload')->name('uploadfile');
-Route::get('success',function(){
-    return view('success');
+Route::get('success',function(Request $request){
+    $mode = $request->input('mode');
+    return view('success',compact('mode'));
 });
 Route::get('/userType',function(){
     return view('/auth/userType');
 })->name('userType');
+
+Route::get('/dashboard','HomeController@dashboard')->name('dashboard');
+Route::get('/download/{id}','HomeController@download');
+// Route::get('/admin/performer',function(){
+//     return view('admin.performer-list');
+// });
+Route::get('/admin/audition','HomeController@auditionList');
+Route::get('/admin/performer','HomeController@performerList');
+Route::get('/admin/venue','HomeController@venueList');
+
+Auth::routes();
+
+Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+Route::get('/verify','Auth\RegisterController@verifyUser')->name('verify.user');
