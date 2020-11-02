@@ -26,23 +26,21 @@ class MailController extends Controller
         ]]);
 
         $sender_email = env('MAIL_FROM_ADDRESS');
-        // $to = $email;
-        $to = 'director_9414@outlook.com';
+        $to = $email;
 
         $recipient_emails = [$to];
 
-        $plaintext_body = 'Hello ';
-        // .$email ;
-        // $plaintext_body .= "<br><br>";
-        // $plaintext_body .= "Welcome to Live Show";
-        // $plaintext_body .= "<br><br>";
-        // $plaintext_body .= "Please click the below link to verify your email and activate your account!";
-        // $plaintext_body .= "<br><br>";
-        // $plaintext_body .= "<a href='".$baseurl."/verify?code=".$verification_code."'>Click Here!</a>";
-        // $plaintext_body .= "<br><br>";
-        // $plaintext_body .= "Thank you!";
-        // $plaintext_body .= "<br><br>";
-        // $plaintext_body .= "liveshow.cloud";
+        $plaintext_body = 'Hello '.$email ;
+        $plaintext_body .= "<br><br>";
+        $plaintext_body .= "Welcome to Live Show";
+        $plaintext_body .= "<br><br>";
+        $plaintext_body .= "Please click the below link to verify your email and activate your account!";
+        $plaintext_body .= "<br><br>";
+        $plaintext_body .= "<a href='".$baseurl."/verify?code=".$verification_code."'>Click Here!</a>";
+        $plaintext_body .= "<br><br>";
+        $plaintext_body .= "Thank you!";
+        $plaintext_body .= "<br><br>";
+        $plaintext_body .= "liveshow.cloud";
 
         $body = $plaintext_body;
         $html_body = $body;	
@@ -77,9 +75,9 @@ class MailController extends Controller
             return true;
             // echo("Email sent! Message ID: $messageId"."\n");
         } catch (AwsException $e) {
-            // return false;
+            return false;
             // return $e->getMessage();
-            return "The email was not sent. Error message: ".$e->getAwsErrorMessage()."\n";
+            // return "The email was not sent. Error message: ".$e->getAwsErrorMessage()."\n";
         }
     }
 }

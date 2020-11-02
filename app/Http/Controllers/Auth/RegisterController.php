@@ -187,14 +187,14 @@ class RegisterController extends Controller
 
         if($user != null){
             $result = MailController::sendSignupEmail($user->name, $user->email, $user->verification_code);
-            // if($result){
-            //     echo json_encode("success");
-            // }
-            // else{
-            //     echo json_encode("something went wrong");
-            //     // echo json_encode($result);
-            // }
-            echo json_encode($result);
+            if($result){
+                echo json_encode("success");
+            }
+            else{
+                echo json_encode("something went wrong");
+                // echo json_encode($result);
+            }
+            // echo json_encode($result);
         }
         else{
             echo json_encode("something went wrong");
