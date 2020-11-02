@@ -20,7 +20,9 @@
                                 <th>location</th>
                                 <th>created at</th>
                                 <th>updated at</th>
+                                @if(Auth::user()->userType == 'talent')
                                 <th>download</th>
+                                @endif
                             </thead>
                             <tbody>
                             @foreach ($videos as $video)
@@ -33,12 +35,14 @@
                                     <td>{{ $video->location }}</td>
                                     <td>{{ $video->created_at }}</td>
                                     <td>{{ $video->updated_at }}</td>
+                                    @if(Auth::user()->userType == 'talent')
                                     <td>
                                         <a class="btn" href="/download/{{ $video->id }}" target="_blank">
                                             <x-jet-button class="ml-4">download
                                             </x-jet-button>
                                         </a>
                                     </td>
+                                    @endif
                                 </tr>
                             @endforeach
                             </tbody>
