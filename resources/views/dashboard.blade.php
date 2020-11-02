@@ -8,8 +8,10 @@
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 dashboard">
             <div class="category"><a href="/admin/audition">Uploaded Auditions</a></div>
+            @if(Auth::user()->userType == 'talent')
             <div class="category"><a href="/admin/performer">Performer List</a></div>
             <div class="category"><a href="/admin/venue">Venue List</a></div>
+            @endif
         </div>
     </div>
 </x-app-layout>
