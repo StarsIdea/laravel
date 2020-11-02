@@ -14,33 +14,35 @@ use Illuminate\Support\Facades\URL;
 
 class MailController extends Controller
 {
-    public static function sendSignupEmail($request, $name, $email, $verification_code){
+    public static function sendSignupEmail($name, $email, $verification_code){
 
         $baseurl = URL::to('/');
         $SesClient = new SesClient([
             'version' => '2010-12-01',
-            'region'  => 'us-east-1',
+            'region'  => env('SES_REGION'),
             'credentials' => [
-                'key' => "AKIAZYQOXGOEHNL5KMGN",
-                'secret' => "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",
+                'key' => env('SES_KEY'),
+                'secret' => env('SES_SECRET'),
         ]]);
 
-        $sender_email = 'support@liveshow.cloud';
-        $to = $request->email;
+        $sender_email = env('MAIL_FROM_ADDRESS');
+        // $to = $email;
+        $to = 'director_9414@outlook.com';
 
         $recipient_emails = [$to];
 
-        $plaintext_body = 'Hello '.$email ;
-        $plaintext_body .= "<br><br>";
-        $plaintext_body .= "Welcome to Live Show";
-        $plaintext_body .= "<br><br>";
-        $plaintext_body .= "Please click the below link to verify your email and activate your account!";
-        $plaintext_body .= "<br><br>";
-        $plaintext_body .= "<a href='".$baseurl."/verify?code=".$verification_code."'>Click Here!</a>";
-        $plaintext_body .= "<br><br>";
-        $plaintext_body .= "Thank you!";
-        $plaintext_body .= "<br><br>";
-        $plaintext_body .= "liveshow.cloud";
+        $plaintext_body = 'Hello ';
+        // .$email ;
+        // $plaintext_body .= "<br><br>";
+        // $plaintext_body .= "Welcome to Live Show";
+        // $plaintext_body .= "<br><br>";
+        // $plaintext_body .= "Please click the below link to verify your email and activate your account!";
+        // $plaintext_body .= "<br><br>";
+        // $plaintext_body .= "<a href='".$baseurl."/verify?code=".$verification_code."'>Click Here!</a>";
+        // $plaintext_body .= "<br><br>";
+        // $plaintext_body .= "Thank you!";
+        // $plaintext_body .= "<br><br>";
+        // $plaintext_body .= "liveshow.cloud";
 
         $body = $plaintext_body;
         $html_body = $body;	
@@ -72,17 +74,12 @@ class MailController extends Controller
                 ],
         
             ]);
-            $messageId = $result['MessageId'];
             return true;
             // echo("Email sent! Message ID: $messageId"."\n");
         } catch (AwsException $e) {
-            // output error message if fails
-            // echo $e->getMessage();
-            // echo("The email was not sent. Error message: ".$e->getAwsErrorMessage()."\n");
-            // echo "\n";
-            return false;
+            // return false;
             // return $e->getMessage();
-            // return "The email was not sent. Error message: ".$e->getAwsErrorMessage()."\n";
+            return "The email was not sent. Error message: ".$e->getAwsErrorMessage()."\n";
         }
     }
 }

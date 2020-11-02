@@ -7,8 +7,6 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
 
-require '/etc/nginx/html/aws/aws-autoloader.php';
-
 use Aws\Ses\SesClient;
 use Aws\Exception\AwsException;
 
@@ -48,18 +46,18 @@ class SignupEmail extends Mailable
         //   $message->to(env('MAIL_USERNAME'));
         //   $message->subject($data['subject']);
         // });
-        // return $this->from(env('MAIL_USERNAME', 'AKIAZYQOXGOEGIXBW3SJ'))->subject('Welcome to Liveshow.cloud')->view('mail.signup-email',['email_data' => $this->email_data]);
+        // return $this->from(env('MAIL_USERNAME', ''))->subject('Welcome to Liveshow.cloud')->view('mail.signup-email',['email_data' => $this->email_data]);
         
         // return $this->markdown('mail.signup-email')->with([
         //     'email_data' =>$this->email_data
         // ]);
 
         $SesClient = new SesClient([
-            'version' => '2010-12-01',
-            'region'  => 'us-east-1',
+            'version' => '',
+            'region'  => '',
             'credentials' => [
-                'key' => "AKIAZYQOXGOEHNL5KMGN",
-                'secret' => "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",
+                'key' => "",
+                'secret' => "",
         ]]);
 
         $sender_email = 'support@liveshow.cloud';
