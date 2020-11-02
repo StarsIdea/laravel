@@ -47,7 +47,7 @@
                                         @endif
                                     </td>
                                     <td>
-                                        <a class="btn" href="/admin/allow/{{ $user->id }}" target="_blank">
+                                        <a class="btn" href="/admin/allow/performer/{{ $user->id }}">
                                             <x-jet-button class="ml-4">Allow
                                             </x-jet-button>
                                         </a>

@@ -134,11 +134,11 @@ Route::get('/download/{id}','HomeController@download');
 //     return view('admin.performer-list');
 // });
 Route::get('/admin/audition','HomeController@auditionList');
-Route::get('/admin/performer','HomeController@performerList');
-Route::get('/admin/venue','HomeController@venueList');
+Route::get('/admin/performer','HomeController@performerList')->name('performerList');
+Route::get('/admin/venue','HomeController@venueList')->name('venueList');
 
 Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 Route::get('/verify','Auth\RegisterController@verifyUser')->name('verify.user');
-Route::get('/admin/allow/{id}','AdminController@allowed');
+Route::get('/admin/allow/{userType}/{id}','AdminController@allowed');
