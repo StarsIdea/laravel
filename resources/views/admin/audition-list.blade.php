@@ -22,7 +22,6 @@
                                 <th>created at</th>
                                 <th>updated at</th>
                                 <th>approve</th>
-                                @endif
                             </thead>
                             <tbody>
                             @foreach ($videos as $video)
@@ -42,11 +41,7 @@
                                             @if(Auth::user()->userType == 'talent')
                                                 <a class="btn" href="/admin/audition/approve/{{ $video->id }}">
                                                     <x-jet-button class="ml-4">
-                                                        @if($video->verification_code != null)
-                                                            Resend
-                                                        @else
-                                                            Approve
-                                                        @endif
+                                                        Approve
                                                     </x-jet-button>
                                                 </a>
                                             @else
