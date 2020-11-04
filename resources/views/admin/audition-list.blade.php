@@ -21,9 +21,7 @@
                                 <th>location</th>
                                 <th>created at</th>
                                 <th>updated at</th>
-                                <th>approved</th>
-                                @if(Auth::user()->userType == 'talent')
-                                <th>Approve</th>
+                                <th>approve</th>
                                 @endif
                             </thead>
                             <tbody>
@@ -41,22 +39,21 @@
                                         @if($video->verification_code != null)
                                             <i class="fa fa-check"></i>
                                         @else
-                                            <i class="fa fa-minus"></i>
+                                            @if(Auth::user()->userType == 'talent')
+                                                <a class="btn" href="/admin/audition/approve/{{ $video->id }}">
+                                                    <x-jet-button class="ml-4">
+                                                        @if($video->verification_code != null)
+                                                            Resend
+                                                        @else
+                                                            Approve
+                                                        @endif
+                                                    </x-jet-button>
+                                                </a>
+                                            @else
+                                                <i class="fa fa-minus"></i>
+                                            @endif
                                         @endif
                                     </td>
-                                    @if(Auth::user()->userType == 'talent')
-                                    <td>
-                                        <a class="btn" href="/admin/audition/approve/{{ $video->id }}">
-                                            <x-jet-button class="ml-4">
-                                                @if($video->verification_code != null)
-                                                    Resend
-                                                @else
-                                                    Approve
-                                                @endif
-                                            </x-jet-button>
-                                        </a>
-                                    </td>
-                                    @endif
                                 </tr>
                             @endforeach
                             </tbody>
