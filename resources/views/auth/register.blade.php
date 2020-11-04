@@ -121,6 +121,12 @@
                 <x-jet-label value="{{ __('Email') }}" />
                 <x-jet-input class="block mt-1 w-full" type="email" name="email" :value="old('email')" required />
             </div>
+            @if($userType == "talent")
+            <div class="mt-4">
+                <x-jet-label value="{{ __('Verification Code') }}" />
+                <x-jet-input class="block mt-1 w-full" type="text" name="verification_code" :value="old('verification_code')" required />
+            </div>
+            @endif
 
             <div class="mt-4">
                 <x-jet-label value="{{ __('Telephone') }}" />
@@ -165,7 +171,7 @@
                 <x-jet-input class="block mt-1 w-full" type="text" name="location" :value="old('location')" required autofocus autocomplete="location" />
             </div>
 
-            
+
 
             <h2 class="font-semibold text-xl text-gray-800 leading-tight">
                 {{ __('Social Media') }}
@@ -210,7 +216,7 @@
                 <x-jet-input class="block mt-1 w-full" type="text" name="cashapp" :value="old('cashapp')" autofocus autocomplete="cashapp" />
             </div>
             @endif
-            
+
 
 
             <div class="flex items-center justify-end mt-4">
@@ -274,6 +280,11 @@
                     data = JSON.parse(data);
                     if(data=="success"){
                         $('#file_form').submit();
+                    }
+                    else if(data=="incorrect_verification_code"){
+                        alert('Incorrect Verification Code');
+                        $('.loader').hide();
+                        $('.overlay').hide();
                     }
                     else{
                         for(var i in data){

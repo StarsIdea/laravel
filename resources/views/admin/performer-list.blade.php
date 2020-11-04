@@ -19,9 +19,6 @@
                                 <th>band</th>
                                 <th>genre</th>
                                 <th>location</th>
-                                <th>email verified</th>
-                                <th>Allowed</th>
-                                <th>Allow</th>
                             </thead>
                             <tbody>
                             @foreach ($users as $user)
@@ -32,26 +29,6 @@
                                     <td>{{ $user->band }}</td>
                                     <td>{{ $user->genre }}</td>
                                     <td>{{ $user->location }}</td>
-                                    <td>
-                                        @if($user->is_verified)
-                                            <i class="fa fa-check"></i>
-                                        @else
-                                            <i class="fa fa-minus"></i>
-                                        @endif
-                                    </td>
-                                    <td>
-                                        @if($user->allowed)
-                                            <i class="fa fa-check"></i>
-                                        @else
-                                            <i class="fa fa-minus"></i>
-                                        @endif
-                                    </td>
-                                    <td>
-                                        <a class="btn" href="/admin/allow/performer/{{ $user->id }}">
-                                            <x-jet-button class="ml-4">Allow
-                                            </x-jet-button>
-                                        </a>
-                                    </td>
                                 </tr>
                             @endforeach
                             </tbody>

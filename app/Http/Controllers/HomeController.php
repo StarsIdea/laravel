@@ -74,10 +74,6 @@ class HomeController extends Controller
         // return $client->createPresignedRequest($command, $expiry)->getUri();
     }
 
-    public function auditionList(){
-        $videos = Video::all();
-        return view('admin.audition-list', compact('videos'));
-    }
     public function performerList(){
         $users = User::where('userType', '=', 'talent')->get();
         return view('admin.performer-list', compact('users'));

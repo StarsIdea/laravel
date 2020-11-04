@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Auth;
 use App\Http\Controllers\Controller;
 use App\Providers\RouteServiceProvider;
 use App\Models\User;
+use App\Models\Video;
 use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
@@ -121,7 +122,7 @@ class RegisterController extends Controller
         $prefix = 'avatars/';
         $acl = 'private';
         $expires = '+10 minutes';
-        $redirectUrl = url('/success?mode=register');
+        $redirectUrl = url('/dashboard');
         $formInputs = [
             'acl' => $acl,
             'key' => $prefix . '${filename}',
@@ -143,6 +144,7 @@ class RegisterController extends Controller
         // $validator = $this->validator($request->all())->validate();
         $userType = $request->input('userType');
         if($userType == "talent"){
+
             $validator = Validator::make($request->all(), [
                 'name' => ['required', 'string', 'max:255'],
                 'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
@@ -154,10 +156,15 @@ class RegisterController extends Controller
                 'band' => ['required', 'string', 'max:255'],
                 'genre' => ['required', 'string', 'max:255'],
                 'location' => ['required', 'string', 'max:255'],
+                'verification_code' => ['required', 'string', 'max:255'],
             ]);
             $request->merge([
                 'allowed' => false
             ]);
+            $video = Video::where('email', '=', $request->input('email'))->where('verification_code', '=', $request->input('verification_code'))->first();
+            if($video == null){
+                return response()->json(json_encode('incorrect_verification_code'), 200);
+            }
         }
         else if($userType == "venue"){
             $validator = Validator::make($request->all(), [
@@ -176,29 +183,19 @@ class RegisterController extends Controller
                 'paypal' => '',
                 'venmo' => '',
                 'cashapp' => '',
-                'allowed' => false
+                'allowed' => false,
+                'verification_code' => ''
             ]);
         }
         if($validator->fails()){
             return response()->json($validator->errors()->toJson(), 200);
         }
-        
+
         event(new Registered($user = $this->create($request->all())));
 
-        if($user != null){
-            $result = MailController::sendSignupEmail($user->name, $user->email, $user->verification_code);
-            if($result){
-                echo json_encode("success");
-            }
-            else{
-                echo json_encode("something went wrong");
-                // echo json_encode($result);
-            }
-            // echo json_encode($result);
-        }
-        else{
-            echo json_encode("something went wrong");
-        }
+        $this->guard()->login($user);
+
+        echo json_encode("success");
     }
 
     public function verifyUser(Request $request){

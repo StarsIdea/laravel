@@ -73,11 +73,74 @@ class MailController extends Controller
         
             ]);
             return true;
-            // echo("Email sent! Message ID: $messageId"."\n");
         } catch (AwsException $e) {
             return false;
-            // return $e->getMessage();
-            // return "The email was not sent. Error message: ".$e->getAwsErrorMessage()."\n";
+        }
+    }
+
+    public static function sendVerificationCode($name, $email, $verification_code){
+
+        $baseurl = URL::to('/');
+        $SesClient = new SesClient([
+            'version' => '2010-12-01',
+            'region'  => env('SES_REGION'),
+            'credentials' => [
+                'key' => env('SES_KEY'),
+                'secret' => env('SES_SECRET'),
+        ]]);
+
+        $sender_email = env('MAIL_FROM_ADDRESS');
+        $to = $email;
+
+        $recipient_emails = [$to];
+
+        $plaintext_body = 'Hello '.$email ;
+        $plaintext_body .= "<br><br>";
+        $plaintext_body .= "Welcome to Live Show";
+        $plaintext_body .= "<br><br>";
+        $plaintext_body .= "Please signup to Live Show";
+        $plaintext_body .= "<br><br>";
+        $plaintext_body .= "Verification code is ".$verification_code;
+        $plaintext_body .= "<br><br>";
+        $plaintext_body .= "<a href='".$baseurl."/userType'>Signup</a>";
+        $plaintext_body .= "<br><br>";
+        $plaintext_body .= "Thank you!";
+        $plaintext_body .= "<br><br>";
+        $plaintext_body .= "liveshow.cloud";
+
+        $body = $plaintext_body;
+        $html_body = $body;	
+        $subject = "Welcome to Live Show";
+        $char_set = 'UTF-8';
+
+        try {
+            $result = $SesClient->sendEmail([
+                'Destination' => [
+                    'ToAddresses' => $recipient_emails,
+                ],
+                'ReplyToAddresses' => [$sender_email],
+                'Source' => $sender_email,
+                'Message' => [
+                'Body' => [
+                    'Html' => [
+                        'Charset' => $char_set,
+                        'Data' => $html_body,
+                    ],
+                    'Text' => [
+                        'Charset' => $char_set,
+                        'Data' => $plaintext_body,
+                    ],
+                ],
+                'Subject' => [
+                    'Charset' => $char_set,
+                    'Data' => $subject,
+                ],
+                ],
+        
+            ]);
+            return true;
+        } catch (AwsException $e) {
+            return false;
         }
     }
 }

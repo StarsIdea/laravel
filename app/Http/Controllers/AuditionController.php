@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Aws\S3\PostObjectV4;
+use App\Models\Video;
+use Illuminate\Support\Facades\Redirect;
 
 class AuditionController extends Controller
 {
@@ -37,7 +39,23 @@ class AuditionController extends Controller
         return view('audition', compact(['attributes', 'inputs']));
     }
 
-    public function audition_list(){
-        return view('images')->with('images', auth()->user()->images);
+    public function auditionList(){
+        $videos = Video::all();
+        return view('admin.audition-list', compact('videos'));
+    }
+
+    public function auditionApprove($id){
+        $generated_code = md5(uniqid(rand(), true));
+        $video = Video::where('id', '=', $id)->first();
+        $video->verification_code = $generated_code;
+        $video->save();
+        $result = MailController::sendVerificationCode($video->name, $video->email, $video->verification_code);
+        if($result){
+            echo json_encode("success");
+        }
+        else{
+            echo json_encode("something went wrong");
+        }
+        return Redirect::to('/admin/audition');
     }
 }

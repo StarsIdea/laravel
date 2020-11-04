@@ -14,7 +14,6 @@ use Aws\S3\PostObjectV4;
 | contains the "web" middleware group. Now create something great!
 |
 */
-Auth::routes();
 // Auth::routes(['verify' => true]);
 Route::get('/email/verify', function () {
     return view('auth.verify-email');
@@ -68,7 +67,7 @@ Route::get('show', function() {
     // $url = \Storage::url($path);
 
     return view('show', compact('url'));
-    
+
 });
 
 Route::get('audition', function() {
@@ -133,9 +132,10 @@ Route::get('/download/{id}','HomeController@download');
 // Route::get('/admin/performer',function(){
 //     return view('admin.performer-list');
 // });
-Route::get('/admin/audition','HomeController@auditionList');
+Route::get('/admin/audition','AuditionController@auditionList');
 Route::get('/admin/performer','HomeController@performerList')->name('performerList');
 Route::get('/admin/venue','HomeController@venueList')->name('venueList');
+Route::get('/admin/audition/approve/{id}', 'AuditionController@auditionApprove');
 
 Auth::routes();
 

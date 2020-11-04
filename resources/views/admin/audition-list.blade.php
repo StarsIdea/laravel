@@ -1,4 +1,5 @@
 <link rel="stylesheet" href="{{ asset('css/style.css') }}">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 <x-app-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">
@@ -20,8 +21,9 @@
                                 <th>location</th>
                                 <th>created at</th>
                                 <th>updated at</th>
+                                <th>approved</th>
                                 @if(Auth::user()->userType == 'talent')
-                                <th>download</th>
+                                <th>Approve</th>
                                 @endif
                             </thead>
                             <tbody>
@@ -35,10 +37,22 @@
                                     <td>{{ $video->location }}</td>
                                     <td>{{ $video->created_at }}</td>
                                     <td>{{ $video->updated_at }}</td>
+                                    <td>
+                                        @if($video->verification_code != null)
+                                            <i class="fa fa-check"></i>
+                                        @else
+                                            <i class="fa fa-minus"></i>
+                                        @endif
+                                    </td>
                                     @if(Auth::user()->userType == 'talent')
                                     <td>
-                                        <a class="btn" href="/download/{{ $video->id }}" target="_blank">
-                                            <x-jet-button class="ml-4">download
+                                        <a class="btn" href="/admin/audition/approve/{{ $video->id }}">
+                                            <x-jet-button class="ml-4">
+                                                @if($video->verification_code != null)
+                                                    Resend
+                                                @else
+                                                    Approve
+                                                @endif
                                             </x-jet-button>
                                         </a>
                                     </td>
