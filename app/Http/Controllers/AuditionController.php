@@ -58,4 +58,15 @@ class AuditionController extends Controller
         }
         return Redirect::to('/admin/audition');
     }
+
+    public function check_verification_code(Request $request)
+    {
+        $code = $request->input('verification_code');
+        $video = Video::where('verification_code', '=', $code)->first();
+        if ($video != null) {
+            echo json_encode('exist');
+        } else {
+            echo json_encode('empty');
+        }
+    }
 }

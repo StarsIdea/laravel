@@ -124,7 +124,7 @@
             @if($userType == "talent")
             <div class="mt-4">
                 <x-jet-label value="{{ __('Verification Code') }}" />
-                <x-jet-input class="block mt-1 w-full" type="text" name="verification_code" :value="old('verification_code')" required />
+                <x-jet-input class="block mt-1 w-full" type="text" name="verification_code" :value="old('verification_code')" required readonly id="verification_code"/>
             </div>
             @endif
 
@@ -235,6 +235,7 @@
 <script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/jquery.validate.min.js"></script>
 <script>
     $(document).ready(() => {
+        $('#verification_code').val('<?php echo $_GET["verification_code"];?>');
         $("#frm_register").parent().parent().css('background', 'url({{ asset("images/bg01.jpg") }})');
         $('#avatar').change(function(){
             label = $('input[type="file"]').val().split('\\');

@@ -129,6 +129,7 @@ Route::get('/userType',function(){
 
 Route::get('/dashboard','HomeController@dashboard')->name('dashboard');
 Route::get('/download/{id}','HomeController@download');
+Route::get('/check_verification_code', 'AuditionController@check_verification_code');
 // Route::get('/admin/performer',function(){
 //     return view('admin.performer-list');
 // });

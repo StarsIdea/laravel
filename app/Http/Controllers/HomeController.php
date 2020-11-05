@@ -67,7 +67,7 @@ class HomeController extends Controller
         $command = $client->getCommand('GetObject', [
             'Bucket' => \Config::get('filesystems.disks.s3.bucket'),
             // 'Key'    => $video->path
-            'Key' => $path 
+            'Key' => $path
         ]);
         echo ($client->createPresignedRequest($command, $expiry)->getUri());
         return Redirect::to($client->createPresignedRequest($command, $expiry)->getUri());
@@ -83,4 +83,5 @@ class HomeController extends Controller
         $users = User::where('userType', '=', 'venue')->get();
         return view('admin.venue-list', compact('users'));
     }
+
 }
