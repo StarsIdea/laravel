@@ -122,8 +122,8 @@
             $(this).find('input').addClass('active');
             $('.user-type input').attr('checked',false);
             $(this).find('input').attr('checked',true);
-            $('#btn_for_submit').toggle();
-            $('#btn_for_modal').toggle();
+            $('#btn_for_talent').toggle();
+            $('#btn_for_venue').toggle();
         });
 
         $('#btn_confirm').click(function(event) {
