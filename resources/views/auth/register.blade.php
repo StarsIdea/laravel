@@ -184,17 +184,17 @@
 
             <div>
                 <x-jet-label value="{{ __('Facebook') }}" />
-                <x-jet-input class="block mt-1 w-full" type="email" name="facebook" :value="old('facebook')" autofocus autocomplete="facebook" />
+                <x-jet-input class="block mt-1 w-full" type="text" name="facebook" :value="old('facebook')" autofocus autocomplete="facebook" />
             </div>
 
             <div>
                 <x-jet-label value="{{ __('Instagram') }}" />
-                <x-jet-input class="block mt-1 w-full" type="email" name="instagram" :value="old('instagram')" autofocus autocomplete="instagram" />
+                <x-jet-input class="block mt-1 w-full" type="text" name="instagram" :value="old('instagram')" autofocus autocomplete="instagram" />
             </div>
 
             <div>
                 <x-jet-label value="{{ __('Twitter') }}" />
-                <x-jet-input class="block mt-1 w-full" type="email" name="twitter" :value="old('twitter')" autofocus autocomplete="twitter" />
+                <x-jet-input class="block mt-1 w-full" type="text" name="twitter" :value="old('twitter')" autofocus autocomplete="twitter" />
             </div>
             @if($userType == "talent")
             <h2 class="font-semibold text-xl text-gray-800 leading-tight">
@@ -203,7 +203,7 @@
 
             <div>
                 <x-jet-label value="{{ __('Paypal') }}" />
-                <x-jet-input class="block mt-1 w-full" type="email" name="paypal" :value="old('paypal')" autofocus autocomplete="paypal" />
+                <x-jet-input class="block mt-1 w-full" type="text" name="paypal" :value="old('paypal')" autofocus autocomplete="paypal" />
             </div>
 
             <div>
