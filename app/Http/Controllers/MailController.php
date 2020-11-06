@@ -43,7 +43,7 @@ class MailController extends Controller
         $plaintext_body .= "liveshow.cloud";
 
         $body = $plaintext_body;
-        $html_body = $body;	
+        $html_body = $body;
         $subject = "Welcome to Live Show";
         $char_set = 'UTF-8';
 
@@ -70,7 +70,7 @@ class MailController extends Controller
                     'Data' => $subject,
                 ],
                 ],
-        
+
             ]);
             return true;
         } catch (AwsException $e) {
@@ -102,14 +102,14 @@ class MailController extends Controller
         $plaintext_body .= "<br><br>";
         $plaintext_body .= "Verification code is ".$verification_code;
         $plaintext_body .= "<br><br>";
-        $plaintext_body .= "<a href='".$baseurl."/userType'>Signup</a>";
+        $plaintext_body .= "<a href='".$baseurl. "/register?verification_code=" . $verification_code . "&userType=talent'>Signup</a>";
         $plaintext_body .= "<br><br>";
         $plaintext_body .= "Thank you!";
         $plaintext_body .= "<br><br>";
         $plaintext_body .= "liveshow.cloud";
 
         $body = $plaintext_body;
-        $html_body = $body;	
+        $html_body = $body;
         $subject = "Welcome to Live Show";
         $char_set = 'UTF-8';
 
@@ -136,7 +136,7 @@ class MailController extends Controller
                     'Data' => $subject,
                 ],
                 ],
-        
+
             ]);
             return true;
         } catch (AwsException $e) {
