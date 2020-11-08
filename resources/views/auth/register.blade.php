@@ -135,7 +135,7 @@
 
             <div class="mt-4">
                 <x-jet-label value="{{ __('Password') }}" />
-                <x-jet-input class="block mt-1 w-full" type="password" name="password" required autocomplete="new-password" />
+                <x-jet-input class="block mt-1 w-full" type="password" name="password" id="password" required autocomplete="new-password" />
             </div>
 
             <div class="mt-4">
@@ -224,6 +224,9 @@
                     {{ __('Already registered?') }}
                 </a>
             </div>
+            <x-jet-button class="ml-4">
+                {{ __('Register') }}
+            </x-jet-button>
         </form>
         <x-jet-button class="ml-4">
             {{ __('Register') }}
@@ -258,50 +261,53 @@
                 $('.file-error').show();
             }
         });
-        $('button[type="submit"]').click(function(e){
-            if($('input[type="file"]').val()==''){
-                $('.file-error').show();
-                return false;
-            }
-            var $form = $('#frm_register');
-            var formData = $('#frm_register').serializeFormJSON();
-            var ajaxurl = $('#frm_register').attr("action");
-            if (!$form.valid()) return false;
-            console.log($form.valid());
-            console.log(formData)
-            $('.loader').show();
-            $('.overlay').show();
-            $.ajax({
-                type: 'POST',
-                url: ajaxurl,
-                data: formData,
-                datatype: 'json',
-                success: function (data) {
-                    console.log(data);
-                    data = JSON.parse(data);
-                    if(data=="success"){
-                        $('#file_form').submit();
-                    }
-                    else if(data=="incorrect_verification_code"){
-                        alert('Incorrect Verification Code');
-                        $('.loader').hide();
-                        $('.overlay').hide();
-                    }
-                    else{
-                        for(var i in data){
-                            var key = i;
-                            var val = data[i];
-                            if(i == "email"){
-                                alert(data["email"]);
-                            }
-                        }
-                        $('.loader').hide();
-                        $('.overlay').hide();
-                    }
-                }
-            });
-            return false;
-        });
+        // $('button[type="submit"]').click(function(e){
+            // if($('input[type="file"]').val()==''){
+            //     $('.file-error').show();
+            //     return false;
+            // }
+            // var $form = $('#frm_register');
+            // var formData = $('#frm_register').serializeFormJSON();
+            // var ajaxurl = $('#frm_register').attr("action");
+            // console.log($form.validate());
+            // return false;
+            // if (!$form.valid()) return false;
+            // console.log($form.valid());
+            // console.log(formData)
+            // $('.loader').show();
+            // $('.overlay').show();
+            // $.ajax({
+            //     type: 'POST',
+            //     url: ajaxurl,
+            //     data: formData,
+            //     datatype: 'json',
+            //     success: function (data) {
+            //         console.log(data);
+            //         data = JSON.parse(data);
+            //         if(data=="success"){
+            //             $('#file_form').submit();
+            //         }
+            //         else if(data=="incorrect_verification_code"){
+            //             alert('Incorrect Verification Code');
+            //             $('.loader').hide();
+            //             $('.overlay').hide();
+            //         }
+            //         else{
+            //             for(var i in data){
+            //                 var key = i;
+            //                 var val = data[i];
+            //                 if(i == "email"){
+            //                     alert(data["email"]);
+            //                 }
+            //             }
+            //             $('.loader').hide();
+            //             $('.overlay').hide();
+            //         }
+            //     }
+            // });
+            // return false;
+        //     console.log('test');
+        // });
         $.fn.serializeFormJSON = function () {
             var o = {};
             var a = this.serializeArray();
@@ -331,7 +337,14 @@
                 telephone: 'required',
                 band: 'required',
                 genre: 'required',
-                location: 'required'
+                location: 'required',
+                password: {
+                    required: true,
+                    minlength: 8
+                },
+                password_confirmation: {
+                    equalTo: '#password'
+                },
             },
             messages: {
                 name: "Please specify your name",
@@ -345,7 +358,57 @@
                 telephone: "Please specify telephone",
                 band: "Please specify band",
                 genre: "Please specify genre",
-                location: "Please specify location"
+                location: "Please specify location",
+                password: {
+                   minlength: 'Password must be at least 8 characters long'
+                },
+                password_confirmation: {
+                   equalTo: 'Please enter the same password'
+                }
+            },
+            submitHandler: function(form) {
+                if($('input[type="file"]').val()==''){
+                    $('.file-error').show();
+                    $(window).scrollTop(0);
+                    return false;
+                }
+                var $form = $('#frm_register');
+                var formData = $('#frm_register').serializeFormJSON();
+                var ajaxurl = $('#frm_register').attr("action");
+                if (!$form.valid()) return false;
+                console.log($form.valid());
+                console.log(formData)
+                $('.loader').show();
+                $('.overlay').show();
+                $.ajax({
+                    type: 'POST',
+                    url: ajaxurl,
+                    data: formData,
+                    datatype: 'json',
+                    success: function (data) {
+                        console.log(data);
+                        data = JSON.parse(data);
+                        if(data=="success"){
+                            $('#file_form').submit();
+                        }
+                        else if(data=="incorrect_verification_code"){
+                            alert('Incorrect Verification Code');
+                            $('.loader').hide();
+                            $('.overlay').hide();
+                        }
+                        else{
+                            for(var i in data){
+                                var key = i;
+                                var val = data[i];
+                                if(i == "email"){
+                                    alert(data["email"]);
+                                }
+                            }
+                            $('.loader').hide();
+                            $('.overlay').hide();
+                        }
+                    }
+                });
             }
         });
     })
