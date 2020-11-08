@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Aws\S3\PostObjectV4;
 use App\Models\Video;
+use App\Models\User;
 use Illuminate\Support\Facades\Redirect;
 
 class AuditionController extends Controller
@@ -49,7 +50,10 @@ class AuditionController extends Controller
         $video = Video::where('id', '=', $id)->first();
         $video->verification_code = $generated_code;
         $video->save();
-        $result = MailController::sendVerificationCode($video->name, $video->email, $video->verification_code);
+        $user = User::where('email', '=' ,$video->email )->first();
+        $result = false;
+        if($user == null)
+            $result = MailController::sendVerificationCode($video->name, $video->email, $video->verification_code);
         if($result){
             echo json_encode("success");
         }

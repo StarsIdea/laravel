@@ -117,14 +117,21 @@
                 </div>
             </div>
 
+            @if($userType == "talent")
+            <div class="mt-4">
+                <x-jet-label value="{{ __('Email') }}" />
+            <x-jet-input class="block mt-1 w-full" type="email" name="email" value="{{ app('request')->input('email') }}" readonly required id="email"/>
+            </div>
+            @else
             <div class="mt-4">
                 <x-jet-label value="{{ __('Email') }}" />
                 <x-jet-input class="block mt-1 w-full" type="email" name="email" :value="old('email')" required />
             </div>
+            @endif
             @if($userType == "talent")
             <div class="mt-4">
                 <x-jet-label value="{{ __('Verification Code') }}" />
-                <x-jet-input class="block mt-1 w-full" type="text" name="verification_code" :value="old('verification_code')" required readonly id="verification_code"/>
+                <x-jet-input class="block mt-1 w-full" type="text" name="verification_code" value="{{ app('request')->input('verification_code') }}" required readonly id="verification_code"/>
             </div>
             @endif
 
@@ -228,9 +235,6 @@
                 {{ __('Register') }}
             </x-jet-button>
         </form>
-        <x-jet-button class="ml-4">
-            {{ __('Register') }}
-        </x-jet-button>
     </x-jet-authentication-card>
 </x-guest-layout>
 
@@ -238,7 +242,6 @@
 <script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/jquery.validate.min.js"></script>
 <script>
     $(document).ready(() => {
-        $('#verification_code').val('<?php echo $_GET["verification_code"];?>');
         $("#frm_register").parent().parent().css('background', 'url({{ asset("images/bg01.jpg") }})');
         $('#avatar').change(function(){
             label = $('input[type="file"]').val().split('\\');
