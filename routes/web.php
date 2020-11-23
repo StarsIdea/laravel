@@ -50,9 +50,16 @@ Route::post('login', 'LoginController@authenticate')->name('login');
 Route::get('about', function(){
     return view('about');
 })->name('about');
+
 Route::get('playing', function(){
     return view('playing');
 })->name('playing');
+
+Route::get('faq', function () {
+    return view('faq');
+})->name('faq');
+
+Route::get('support', 'HomeController@support')->name('support');
 Route::get('terms', 'HomeController@terms')->name('terms');
 // Route::get('audition', 'AuditionController@index')->name('audition');
 

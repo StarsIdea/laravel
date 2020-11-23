@@ -2,7 +2,7 @@
 @section('content')
 
     <link href="https://unpkg.com/video.js/dist/video-js.min.css" rel="stylesheet">
-    <script src="https://unpkg.com/video.js/dist/video.min.js"></script>
+    <script src="{{ asset('js/video.js') }}"></script>
 
     <style>
         body {
@@ -31,8 +31,9 @@
             data-setup='{}'
             style="width: 100%; height: 480px; border-radius: 10px;"
         >
-            <source src="https://streamingplayback.s3.amazonaws.com/hls_out/mrchuck-1601230682.m3u8"
-            type="application/x-mpegURL"></source>
+            <!-- <source src="https://streamingplayback.s3.amazonaws.com/hls_out/mrchuck-1601230682.m3u8"
+            type="application/x-mpegURL"></source> -->
+            <source src="https://www.w3schools.com/html/mov_bbb.mp4" type="application/x-mpegURL"></source>
             <p class="vjs-no-js">
                 To view this video please enable JavaScript, and consider upgrading to a
                 web browser that

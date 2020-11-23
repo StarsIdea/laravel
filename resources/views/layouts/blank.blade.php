@@ -33,10 +33,12 @@
                 <a class="mr-3" href="{{ route('audition') }}">Audition</a>
                 <a class="mr-3" href="{{ route('about') }}">About</a>
                 <a class="mr-3" href="{{ route('playing') }}">Playing</a>
+                <a class="mr-3" href="{{ route('faq') }}">Faq</a>
                 @if(!Auth::check())
                     <a class="mr-3" href="{{ route('login') }}">Login</a>
                     <a class="mr-3" href="{{ route('userType') }}">Register</a>
                 @else
+                    <a class="mr-3" href="{{ route('support') }}">Support</a>
                     <a class="mr-3" href="{{ route('dashboard') }}">{{ Auth::user()->name }}</a>
                     <form class="d-inline-block" method="POST" action="{{ route('logout') }}">
                         @csrf

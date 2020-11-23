@@ -31,6 +31,10 @@ class HomeController extends Controller
         return view('audition');
     }
 
+    public function support() {
+        return view('support');
+    }
+
     public function dashboard(){
         // $s3 = \Storage::disk('s3');
         // $client = $s3->getDriver()->getAdapter()->getClient();
