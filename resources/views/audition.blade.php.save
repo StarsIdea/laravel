@@ -49,10 +49,8 @@
     <div class="loader"></div>
     <div class="overlay"></div>
     <div class="container my-5 col-md-12">
-        <span class="text-center">
-        <h2>Be a part of LiveShow!</h2>
-        <h3>Submit your Audition today</h3>
-        </span>
+        <h2 class="text-center">Be a part of LiveShow!<br/>Submit your Audition today</h2>
+        
         <div class="col-md-4 upload-form-section">
         @if (session('success'))
             <div class="alert alert-success alert-dismissable">
@@ -100,18 +98,18 @@
                     <div class="input-group">
                         <label class="input-group-btn my-0">
                             <span class="btn btn-large btn-outline-primary rounded-0" id="browse">
-                                Browse
+                                Browse 
                             <input id="video-input" name="file" type="file" multiple value="{{ old('file') }}">
                             </span>
                         </label>
-                        <input type="text" class="form-control rounded-0 lspace" readonly placeholder="Upload video">
+                        <input type="text" class="form-control rounded-0" readonly placeholder="Upload video">
                     </div>
                     <span class="help-block text-danger">{{$errors->first('file')}}</span>
                 </div>
                 <div class="form-group">
                     <p>Disclaimer Text box (Display text) </p>
                     <label class="form-check-label form-check">
-                        <input class="form-check-input" type="checkbox" name="disclaimer" id="check_disclaimer"> Accept Terms
+                        <input class="form-check-input" type="checkbox" name="disclaimer" id="check_disclaimer"> Accept disclaimer
                     </label>
                 </div>
                 <button class="btn btn-primary" id="btn_upload">Upload</button> -->
@@ -131,11 +129,11 @@
                     <div class="input-group">
                         <label class="input-group-btn my-0">
                             <span class="btn btn-large btn-outline-primary rounded-0" id="browse">
-                                Browse
+                                Browse&hellip; 
                             <input id="video-input" name="file" type="file" multiple value="{{ old('file') }}">
                             </span>
                         </label>
-                        <input type="text" class="form-control rounded-0 lspace" readonly placeholder="Upload video">
+                        <input type="text" class="form-control rounded-0" readonly placeholder="Upload video">
                     </div>
                     <span class="help-block text-danger">{{$errors->first('file')}}</span>
                 </div>
@@ -143,7 +141,7 @@
             <span class="help-block text-danger file-error"><label id="file-error" class="error" for="file">Please select video file</label></span>
             <div class="form-group">
                 <div class="disclaimer">
-                    <p class="header">Terms and Conditions</p>
+                    <p class="header">Disclaimer</p>
                     <p class="content">You are uploading your audition video for consideration to use the 
                                        LiveShow service. Uploading a video does not constitute guaranteed acceptance to use the service. 
                                        All auditions are reviewed and judged on merit which will include quality of performer / performance, 
@@ -155,7 +153,7 @@
                                        part or all of the LiveShow service.</p>
                 </div>
                 <label class="form-check-label form-check">
-                    <input class="form-check-input" type="checkbox" name="disclaimer" id="check_disclaimer"> I Accept Terms and Conditions
+                    <input class="form-check-input" type="checkbox" name="disclaimer" id="check_disclaimer"> Accept disclaimer
                 </label>
             </div>
             <button class="btn btn-primary" id="btn_upload">Upload</button>
