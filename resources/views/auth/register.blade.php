@@ -1,4 +1,4 @@
-<link rel="stylesheet" href="{{ asset('css/style.css') }}">
+
 <style>
     .loader {
         border: 16px solid #f3f3f3; /* Light grey */
@@ -32,11 +32,16 @@
         /* margin-top: -3rem; */
         display: none;
     }
+    body div.min-h-screen.pt-6{
+        padding: 100px 60px;
+        background-repeat: no-repeat !important;
+        background-size: cover !important;
+    }
 </style>
 <div class="loader"></div>
 <div class="overlay"></div>
 <x-guest-layout>
-    <x-jet-authentication-card style="background: url({{ asset('images/bg01.jpg') }})">
+    <x-jet-authentication-card>
         <x-slot name="logo">
             <x-jet-authentication-card-logo />
         </x-slot>

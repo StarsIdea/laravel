@@ -27,7 +27,9 @@
     <body>
         <header>
             <div class="logo">
-            <img src="{{ asset('images/blue-logo.png')}}"/>
+                <a href="/">
+                    <img src="{{ asset('images/blue-logo.png')}}"/>
+                </a>
             </div>
             <div class="navigation">
                 <a class="mr-3" href="{{ route('audition') }}">Audition</a>

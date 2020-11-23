@@ -42,6 +42,15 @@
     .alert{
         display:none;
     }
+    body div.min-h-screen.pt-6{
+        padding: 100px 60px;
+        background-repeat: no-repeat !important;
+        background-size: cover !important;
+        background: url({{ asset('images/bg01.jpg') }});
+    }
+    body{
+        padding: 0px !important;
+    }
 </style>
 <div class="loader"></div>
 <div class="overlay"></div>
