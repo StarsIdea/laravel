@@ -45,8 +45,14 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
 });
 
 Route::post('login', 'LoginController@authenticate')->name('login');
-Route::get('about', 'HomeController@about')->name('about');
-Route::get('playing', 'HomeController@playing')->name('playing');
+// Route::get('about', 'HomeController@about')->name('about');
+// Route::get('playing', 'HomeController@playing')->name('playing');
+Route::get('about', function(){
+    return view('about');
+})->name('about');
+Route::get('playing', function(){
+    return view('playing');
+})->name('playing');
 Route::get('terms', 'HomeController@terms')->name('terms');
 // Route::get('audition', 'AuditionController@index')->name('audition');
 

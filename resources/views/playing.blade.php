@@ -21,7 +21,7 @@
             So how do you balance your remarkable content creation with your web design needs? It all starts with the "About Us" page.
             For a remarkable about page, all you need to do is figure out your company's unique identity, and then share it with the world. Easy, right? Of course not. Your "About Us" page is one of the most important pages on your website, and it needs to be well crafted. This profile also happens to be one of the most commonly overlooked pages, which is why you should make it stand out.
         </p>
-    
+
         <video
             id="my-player"
             class="video-js"
@@ -29,9 +29,9 @@
             preload="auto"
             poster="//vjs.zencdn.net/v/oceans.png"
             data-setup='{}'
-            style="width: 100%; height: 480px; border-radius: 10px;"    
+            style="width: 100%; height: 480px; border-radius: 10px;"
         >
-            <source src="https://streamingplayback.s3.amazonaws.com/hls_out/mrchuck-1601230682.m3u8" 
+            <source src="https://streamingplayback.s3.amazonaws.com/hls_out/mrchuck-1601230682.m3u8"
             type="application/x-mpegURL"></source>
             <p class="vjs-no-js">
                 To view this video please enable JavaScript, and consider upgrading to a

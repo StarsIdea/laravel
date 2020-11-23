@@ -1,51 +1,50 @@
 @extends('layouts.blank')
-@section('title', 'Submit your Audition')
+@section('extra-css')
+<style>
+    body {
+        background: url('{{ asset("images/bg01.jpg")}}');
+        color: white;
+        background-size: cover;
+        background-repeat: no-repeat;
+    }
+    .file-error{
+        display: none;
+    }
+    .loader {
+        border: 16px solid #f3f3f3; /* Light grey */
+        border-top: 16px solid #3498db; /* Blue */
+        border-radius: 50%;
+        width: 120px;
+        height: 120px;
+        animation: spin 2s linear infinite;
+    }
+    .loader {
+        border-top: 16px solid #3498db;
+        border-bottom: 16px solid #3498db;
+        margin-top: calc(50vh - 60px);
+        position: fixed;
+        margin-left: calc(50vw - 60px);
+        z-index: 10000;
+        display: none;
+    }
+
+    @keyframes spin {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
+    }
+    .overlay{
+        position: fixed;
+        z-index: 100;
+        background-color: #000;
+        opacity: 0.7;
+        width: 100vw;
+        height: 100vh;
+        margin-top: -3rem;
+        display: none;
+    }
+</style>
+@endsection
 @section('content')
-
-    <link href="https://unpkg.com/video.js/dist/video-js.min.css" rel="stylesheet">
-    <script src="https://unpkg.com/video.js/dist/video.min.js"></script>
-
-    <style>
-        body {
-            background: url('{{ asset("images/bg01.jpg")}}');
-            color: white;
-        }
-        .file-error{
-            display: none;
-        }
-        .loader {
-            border: 16px solid #f3f3f3; /* Light grey */
-            border-top: 16px solid #3498db; /* Blue */
-            border-radius: 50%;
-            width: 120px;
-            height: 120px;
-            animation: spin 2s linear infinite;
-        }
-        .loader {
-            border-top: 16px solid #3498db;
-            border-bottom: 16px solid #3498db;
-            margin-top: calc(50vh - 60px);
-            position: fixed;
-            margin-left: calc(50vw - 60px);
-            z-index: 10000;
-            display: none;
-        }
-
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-        .overlay{
-            position: fixed;
-            z-index: 100;
-            background-color: #000;
-            opacity: 0.7;
-            width: 100vw;
-            height: 100vh;
-            margin-top: -3rem;
-            display: none;
-        }
-    </style>
     <div class="loader"></div>
     <div class="overlay"></div>
     <div class="container my-5 col-md-12">
@@ -53,7 +52,7 @@
         <h2>Be a part of LiveShow!</h2>
         <h3>Submit your Audition today</h3>
         </span>
-        <div class="col-md-4 upload-form-section">
+        <div class="col-md-8 col-lg-4 upload-form-section">
         @if (session('success'))
             <div class="alert alert-success alert-dismissable">
                 <button type="button" class="close" data-dismiss="alert">&times;</button>
@@ -123,7 +122,7 @@
                 @foreach($inputs as $key => $input)
                     <input type="hidden" name="{{ $key }}" value="{{ $input }}" />
                 @endforeach
-<!--                 
+<!--
                 <input type="file" name="file" />
 
                 <p><button>Submit</button></p> -->
@@ -144,14 +143,14 @@
             <div class="form-group">
                 <div class="disclaimer">
                     <p class="header">Terms and Conditions</p>
-                    <p class="content">You are uploading your audition video for consideration to use the 
-                                       LiveShow service. Uploading a video does not constitute guaranteed acceptance to use the service. 
-                                       All auditions are reviewed and judged on merit which will include quality of performer / performance, 
-                                       technical quality of the audition video and fit for curation of the LiveShow brand. By uploading your 
-                                       audition and providing content to the Live Show service, you grant to 
-                                       Live Show a worldwide, non-exclusive, royalty-free, sublicensable and transferable license to use uploaded 
-                                       content. This may include distribution, display, reproduction, and derivative works in connection with 
-                                       LiveShow, its successors and affiliates business, including for the purpose of promoting and redistributing 
+                    <p class="content">You are uploading your audition video for consideration to use the
+                                       LiveShow service. Uploading a video does not constitute guaranteed acceptance to use the service.
+                                       All auditions are reviewed and judged on merit which will include quality of performer / performance,
+                                       technical quality of the audition video and fit for curation of the LiveShow brand. By uploading your
+                                       audition and providing content to the Live Show service, you grant to
+                                       Live Show a worldwide, non-exclusive, royalty-free, sublicensable and transferable license to use uploaded
+                                       content. This may include distribution, display, reproduction, and derivative works in connection with
+                                       LiveShow, its successors and affiliates business, including for the purpose of promoting and redistributing
                                        part or all of the LiveShow service.</p>
                 </div>
                 <label class="form-check-label form-check">
@@ -162,6 +161,9 @@
         </div>
 
     </div>
+@endsection
+
+@section('extra-js')
     <script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/jquery.validate.min.js"></script>
     <script>
     $(document).on("change", ":file", function() {

@@ -7,7 +7,7 @@
         }
     </style>
 
-    <div class="container my-5">
+    <div class="container my-5 content">
         <h1 class="text-center">About Us</h1>
         <p class="mt-4">
             Building a website is, in many ways, an exercise of willpower. It’s tempting to get distracted by the bells and whistles of the design process, and forget all about creating compelling content.
