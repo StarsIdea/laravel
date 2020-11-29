@@ -21,9 +21,9 @@
     .loader {
         border-top: 16px solid #3498db;
         border-bottom: 16px solid #3498db;
-        margin-top: calc(50vh - 60px);
+        top: calc(50vh - 60px);
         position: fixed;
-        margin-left: calc(50vw - 60px);
+        left: calc(50vw - 60px);
         z-index: 10000;
         display: none;
     }
@@ -34,12 +34,13 @@
     }
     .overlay{
         position: fixed;
+        top: 0px;
+        left: 0px;
         z-index: 100;
         background-color: #000;
         opacity: 0.7;
         width: 100vw;
         height: 100vh;
-        margin-top: -3rem;
         display: none;
     }
 </style>

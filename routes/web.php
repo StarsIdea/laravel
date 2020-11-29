@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use Illuminate\Foundation\Auth\EmailVerificationRequest;
 use Illuminate\Http\Request;
 use Aws\S3\PostObjectV4;
+use App\Http\Controllers\AuthController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -146,7 +147,7 @@ Route::get('/check_verification_code', 'AuditionController@check_verification_co
 // Route::get('/admin/performer',function(){
 //     return view('admin.performer-list');
 // });
-Route::get('/admin/audition','AuditionController@auditionList');
+Route::get('/admin/audition','AuditionController@auditionList')->middleware(['auth']);
 Route::get('/admin/performer','HomeController@performerList')->name('performerList');
 Route::get('/admin/venue','HomeController@venueList')->name('venueList');
 Route::get('/admin/audition/approve/{id}', 'AuditionController@auditionApprove');
@@ -156,3 +157,25 @@ Auth::routes();
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 Route::get('/verify','Auth\RegisterController@verifyUser')->name('verify.user');
 Route::get('/admin/allow/{userType}/{id}','AdminController@allowed');
+
+Route::group([
+    'middleware' => 'api',
+    'prefix' => 'auth'
+
+],
+    function ($router) {
+        Route::post('/login', [AuthController::class, 'login']);
+        Route::post('/register', [AuthController::class, 'register']);
+        Route::post('/logout', [AuthController::class, 'logout']);
+        Route::post('/refresh', [AuthController::class, 'refresh']);
+        Route::get('/user-profile', [AuthController::class, 'userProfile']);
+    }
+);
+
+Route::get('/test', 'AuthController@auth_test');
+
+Route::get('forget-password','Auth\ForgotPasswordController@getEmail')->name('forget-password');
+Route::post('forget-password', 'Auth\ForgotPasswordController@postEmail')->name('forget-password');
+
+Route::get('reset-password/{token}', 'Auth\ResetPasswordController@getPassword');
+Route::post('reset-password', 'Auth\ResetPasswordController@updatePassword')->name('reset-password');

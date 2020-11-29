@@ -18,13 +18,19 @@
             </div>
         @endif
 
+        @if (session('message'))
+            <div class="mb-4 font-medium text-sm text-green-600">
+                {{ session('message') }}
+            </div>
+        @endif
+
         @if (session('error'))
             <div class="mb-4 font-medium text-red-600">
                 {{ session('error') }}
             </div>
         @endif
 
-        <form id="frm_login" method="POST" action="{{ route('login') }}">
+        <form id="frm_login" method="POST" action="/auth/login">
             @csrf
 
             <div>
@@ -46,7 +52,7 @@
 
             <div class="flex items-center justify-end mt-4">
                 @if (Route::has('password.request'))
-                    <a class="underline text-sm text-gray-600 hover:text-gray-900" href="{{ route('password.request') }}">
+                    <a class="underline text-sm text-gray-600 hover:text-gray-900" href="{{ route('forget-password') }}">
                         {{ __('Forgot your password?') }}
                     </a>
                 @endif

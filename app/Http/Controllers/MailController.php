@@ -143,4 +143,129 @@ class MailController extends Controller
             return false;
         }
     }
+
+    public static function resetPassword($email, $token)
+    {
+
+        $baseurl = URL::to('/');
+        $SesClient = new SesClient([
+            'version' => '2010-12-01',
+            'region'  => env('SES_REGION'),
+            'credentials' => [
+                'key' => env('SES_KEY'),
+                'secret' => env('SES_SECRET'),
+            ]
+        ]);
+
+        $sender_email = env('MAIL_FROM_ADDRESS');
+        $to = $email;
+
+        $recipient_emails = [$to];
+
+        $plaintext_body = 'Hello ' . $email;
+        $plaintext_body .= "<br><br>";
+        $plaintext_body .= "Please Reset Password";
+        $plaintext_body .= "<br><br>";
+        $plaintext_body .= "<a href='" . $baseurl . "/reset-password/" . $token."'>Reset</a>";
+        $plaintext_body .= "<br><br>";
+        $plaintext_body .= "liveshow.cloud";
+
+        $body = $plaintext_body;
+        $html_body = $body;
+        $subject = "Reset Password";
+        $char_set = 'UTF-8';
+
+        try {
+            $result = $SesClient->sendEmail([
+                'Destination' => [
+                    'ToAddresses' => $recipient_emails,
+                ],
+                'ReplyToAddresses' => [$sender_email],
+                'Source' => $sender_email,
+                'Message' => [
+                    'Body' => [
+                        'Html' => [
+                            'Charset' => $char_set,
+                            'Data' => $html_body,
+                        ],
+                        'Text' => [
+                            'Charset' => $char_set,
+                            'Data' => $plaintext_body,
+                        ],
+                    ],
+                    'Subject' => [
+                        'Charset' => $char_set,
+                        'Data' => $subject,
+                    ],
+                ],
+
+            ]);
+            return true;
+        } catch (AwsException $e) {
+            return false;
+        }
+    }
+
+    public static function newSubmission()
+    {
+
+        $baseurl = URL::to('/');
+        $SesClient = new SesClient([
+            'version' => '2010-12-01',
+            'region'  => env('SES_REGION'),
+            'credentials' => [
+                'key' => env('SES_KEY'),
+                'secret' => env('SES_SECRET'),
+            ]
+        ]);
+
+        $sender_email = env('MAIL_FROM_ADDRESS');
+        $to = $sender_email;
+        // $to = 'director_9414@outlook.com';
+
+        $recipient_emails = [$to];
+
+        $plaintext_body = 'Hello ' . $to;
+        $plaintext_body .= "<br><br>";
+        $plaintext_body .= "Please check Audition page";
+        $plaintext_body .= "<br><br>";
+        $plaintext_body .= "<a href='" . $baseurl . "/admin/audition'>Check</a>";
+        $plaintext_body .= "<br><br>";
+        $plaintext_body .= "liveshow.cloud";
+
+        $body = $plaintext_body;
+        $html_body = $body;
+        $subject = "New Submission";
+        $char_set = 'UTF-8';
+
+        try {
+            $result = $SesClient->sendEmail([
+                'Destination' => [
+                    'ToAddresses' => $recipient_emails,
+                ],
+                'ReplyToAddresses' => [$sender_email],
+                'Source' => $sender_email,
+                'Message' => [
+                    'Body' => [
+                        'Html' => [
+                            'Charset' => $char_set,
+                            'Data' => $html_body,
+                        ],
+                        'Text' => [
+                            'Charset' => $char_set,
+                            'Data' => $plaintext_body,
+                        ],
+                    ],
+                    'Subject' => [
+                        'Charset' => $char_set,
+                        'Data' => $subject,
+                    ],
+                ],
+
+            ]);
+            return true;
+        } catch (AwsException $e) {
+            return false;
+        }
+    }
 }

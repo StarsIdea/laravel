@@ -29,6 +29,9 @@ class VideoController extends Controller
         ]);
         // $this->video->create($request->only('name', 'email', 'telephone', 'band', 'genre', 'location', 'path', 'size'));
         $this->video->create($request->only('name', 'email', 'telephone', 'band', 'genre', 'location', 'path', 'size'));
+
+        MailController::newSubmission();
+
         // return back()->with('success', 'Video Successfully Saved');
         echo json_encode("success");
     }

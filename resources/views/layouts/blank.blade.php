@@ -36,7 +36,7 @@
                 <a class="mr-3" href="{{ route('about') }}">About</a>
                 <a class="mr-3" href="{{ route('playing') }}">Playing</a>
                 <a class="mr-3" href="{{ route('faq') }}">Faq</a>
-                @if(!Auth::check())
+                @if(!auth('api')->check())
                     <a class="mr-3" href="{{ route('login') }}">Login</a>
                     <a class="mr-3" href="{{ route('userType') }}">Register</a>
                 @else

@@ -8,11 +8,12 @@ use App\Models\Video;
 use App\Models\User;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Facades\Auth;
 
 class HomeController extends Controller
 {
     public function __construct(){
-        $this->middleware('auth');
+        // $this->middleware('auth');
     }
 
     public function about() {
@@ -24,7 +25,8 @@ class HomeController extends Controller
     }
 
     public function terms() {
-        return view('terms');
+        echo Auth::check();
+        // return view('terms');
     }
 
     public function audition() {
