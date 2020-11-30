@@ -7,8 +7,9 @@
         <x-jet-validation-errors class="mb-4" />
         <div class="flash-message">
             @foreach (['danger', 'warning', 'success', 'info'] as $msg)
-                @if(Session::has('alert-', $msg))
-                    <p class="alert alert-{{ $msg }}">{{ Session::get('alert-', $msg) }} <a href="#" class="close" data-dismiss="alert" aria-label="close"></a></p>
+                @if (Session::has('alert-', $msg))
+                    <p class="alert alert-{{ $msg }}">{{ Session::get('alert-', $msg) }} <a href="#" class="close"
+                            data-dismiss="alert" aria-label="close"></a></p>
                 @endif
             @endforeach
         </div>
@@ -30,17 +31,19 @@
             </div>
         @endif
 
-        <form id="frm_login" method="POST" action="/auth/login">
+        <form id="frm_login" method="POST" action="{{ route('login') }}">
             @csrf
 
             <div>
                 <x-jet-label value="{{ __('Email') }}" />
-                <x-jet-input class="block mt-1 w-full" type="email" name="email" :value="old('email')" required autofocus />
+                <x-jet-input class="block mt-1 w-full" type="email" name="email" :value="old('email')" required
+                    autofocus />
             </div>
 
             <div class="mt-4">
                 <x-jet-label value="{{ __('Password') }}" />
-                <x-jet-input class="block mt-1 w-full" type="password" name="password" required autocomplete="current-password" />
+                <x-jet-input class="block mt-1 w-full" type="password" name="password" required
+                    autocomplete="current-password" />
             </div>
 
             <div class="block mt-4">
@@ -52,7 +55,8 @@
 
             <div class="flex items-center justify-end mt-4">
                 @if (Route::has('password.request'))
-                    <a class="underline text-sm text-gray-600 hover:text-gray-900" href="{{ route('forget-password') }}">
+                    <a class="underline text-sm text-gray-600 hover:text-gray-900"
+                        href="{{ route('forget-password') }}">
                         {{ __('Forgot your password?') }}
                     </a>
                 @endif
@@ -65,10 +69,13 @@
     </x-jet-authentication-card>
 </x-guest-layout>
 
-<script src="https://code.jquery.com/jquery-3.5.1.min.js" integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script>
+<script src="https://code.jquery.com/jquery-3.5.1.min.js"
+    integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script>
 
 <script>
     $(document).ready(() => {
-        $("#frm_login").parent().parent().css('background', 'url({{ asset("images/bg01.jpg") }})')
+        $("#frm_login").parent().parent().css('background', 'url({{ asset('
+            images / bg01.jpg ') }})')
     })
+
 </script>

@@ -4,10 +4,11 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
-use Illuminate\Support\Facades\Auth;
 use App\Models\User;
-use Validator;
+use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 
 class AuthController extends Controller
 {
@@ -16,7 +17,7 @@ class AuthController extends Controller
      *
      * @return void
      */
-    public function __construct()
+    public function __construct(Request $request)
     {
         $this->middleware('auth:api', ['except' => ['login', 'register', 'auth_test']]);
     }
@@ -28,24 +29,36 @@ class AuthController extends Controller
      */
     public function login(Request $request)
     {
+        $credentials = $request->only('email', 'password');
         $validator = Validator::make($request->all(), [
             'email' => 'required|email',
             'password' => 'required|string|min:6',
         ]);
 
+
+        Log::channel('stderr')->info('Something happened!  login');
+        $xml = new SimpleXMLElement('<root/>');
+
         if ($validator->fails()) {
+
+            array_walk_recursive($validator->errors(), array ($xml, 'addChild'));
+            return $xml->asXML();
             // return response()->json($validator->errors(), 200);
-            session()->flash('error', json_encode($validator->errors()));
-            return back()->withInput();
         }
-        if (!$token = auth('api')->attempt($validator->validated())) {
+        if (!$token =auth('api')->attempt($credentials)) {
+            array_walk_recursive(['error' => 'Unauthorized'], array ($xml, 'addChild'));
+            return $xml->asXML();
             // return response()->json(['error' => 'Unauthorized'], 200);
-            session()->flash('error', 'These credentials do not match.');
-            return back()->withInput();
         }
-        $response_token = $this->createNewToken($token);
-        // session()->flash('token', $response_token);
-        return Redirect::to('/');
+
+        array_walk_recursive($this->createNewToken($token), array ($xml, 'addChild'));
+        return $xml->asXML();
+        // return $this->createNewToken($token);
+    }
+
+    public function me()
+    {
+        return response()->json($this->guard()->user(), 200);
     }
 
     /**
@@ -82,9 +95,8 @@ class AuthController extends Controller
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function logout()
-    {
-        auth()->logout();
+    public function logout() {
+        auth('api')->logout();
 
         return response()->json(['message' => 'User successfully signed out']);
     }
@@ -94,9 +106,8 @@ class AuthController extends Controller
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function refresh()
-    {
-        return $this->createNewToken(auth()->refresh());
+    public function refresh() {
+        return $this->createNewToken(auth('api')->refresh());
     }
 
     /**
@@ -116,13 +127,12 @@ class AuthController extends Controller
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    protected function createNewToken($token)
-    {
+    protected function createNewToken($token){
         return response()->json([
             'access_token' => $token,
             'token_type' => 'bearer',
-            'expires_in' => auth()->factory()->getTTL() * 60,
-            'user' => auth()->user()
+            'expires_in' => auth('api')->factory()->getTTL() * 60,
+            'user' => auth('api')->user()
         ]);
     }
 
