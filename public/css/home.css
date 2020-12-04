@@ -68,7 +68,9 @@ body {
 
 @media screen and (max-width: 480px) {
   html, body {
-    min-width: 320px; } }
+    /* min-width: 320px; */
+  }
+}
 
 html {
   box-sizing: border-box; }
@@ -77,7 +79,7 @@ html {
   box-sizing: inherit; }
 
 html, body {
-  height: 100%;
+  min-height: 100vh;
   overflow-x: hidden;
   width: 100%; }
   @media screen and (max-height: 640px) {
@@ -736,4 +738,16 @@ button,
 
 /* Footer */
 
+div.bg-gray-100{
+    background-color: transparent;
+}
+div.bg-gray-100 div.w-full{
+    max-width: max-content;
+}
 
+div.bg-gray-100 div.w-full input{
+    border: 1px solid;
+}
+#file_form button{
+    color: #333 !important;
+}

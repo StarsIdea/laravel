@@ -20,6 +20,7 @@
         "laravel/ui": "^3.0",
         "league/flysystem-aws-s3-v3": "~1.0",
         "livewire/livewire": "^2.0",
+        "spatie/array-to-xml": "^2.15",
         "tymon/jwt-auth": "^1.0"
     },
     "require-dev": {

@@ -25,8 +25,7 @@ class HomeController extends Controller
     }
 
     public function terms() {
-        echo Auth::check();
-        // return view('terms');
+        return view('terms');
     }
 
     public function audition() {

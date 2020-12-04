@@ -47,7 +47,8 @@ class User extends Authenticatable implements JWTSubject
         'allowed',
         'userType',
         'verification_code',
-        'is_verified'
+        'is_verified',
+        'stream_key'
     ];
 
     /**
@@ -83,6 +84,11 @@ class User extends Authenticatable implements JWTSubject
     public function videos()
     {
         return $this->hasMany(Video::class, 'auth_by')->latest();
+    }
+
+    public function events()
+    {
+        return $this->hasMany(StreamEvent::class, 'userkey')->latest();
     }
 
     public function getJWTIdentifier()

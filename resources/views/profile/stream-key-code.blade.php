@@ -12,6 +12,12 @@
             min-width: 500px;
         }
 
+        @media only screen and (max-width: 600px) {
+            .category {
+                min-width: 300px;
+            }
+        }
+
         body {
             background-repeat: no-repeat;
             background-size: cover;
@@ -23,17 +29,18 @@
         }
 
     </style>
+    <link rel="stylesheet" href="{{ asset('css/home.css') }}" />
 @endsection
 @section('content')
     <div class="py-12 content">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 dashboard">
-            <div class="category"><a href="/admin/stream_key_code">Stream Key Code</a></div>
-            <div class="category"><a href="/admin/eventList/upcoming">Event List</a></div>
-            <div class="category"><a href="/admin/audition">Uploaded Auditions</a></div>
-            @if (Auth::user()->userType == 'talent')
-                <div class="category"><a href="/admin/performer">Performer List</a></div>
-                <div class="category"><a href="/admin/venue">Venue List</a></div>
-            @endif
+            <h1> Stream Key </h1>
+            <h4>{{ $streamKeyCode }}</h4>
+            <form action="/admin/update_stream_key_code" id="frm_subscribe" method="POST">
+                @csrf
+                <input type="text" name="streamkeycode" value="{{ $streamKeyCode }}">
+                <input type="submit" value="Update">
+            </form>
         </div>
     </div>
 @endsection

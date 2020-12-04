@@ -151,6 +151,17 @@ Route::get('/admin/audition','AuditionController@auditionList')->middleware(['au
 Route::get('/admin/performer','HomeController@performerList')->name('performerList');
 Route::get('/admin/venue','HomeController@venueList')->name('venueList');
 Route::get('/admin/audition/approve/{id}', 'AuditionController@auditionApprove');
+Route::get('/admin/stream_key_code', 'UserController@streamKeyCode');
+Route::post('/admin/update_stream_key_code', 'UserController@updateStreamKeyCode');
+Route::get('/admin/eventList/{eventType}', 'UserController@eventList');
+Route::get('/admin/addEvent', 'UserController@addEventForm');
+Route::get('/admin/editEvent/{id}', 'UserController@editEventForm');
+Route::post('/admin/addEvent', 'UserController@addEvent');
+Route::post('/admin/editEvent/{id}', 'UserController@editEvent');
+Route::get('/admin/userProfile', 'UserController@profile')->name('current_user_profile');
+Route::get('/admin/userPublicPage', 'UserController@userPublicPage')->name('user-public-page');
+Route::post('/admin/updateProfile', 'UserController@updateProfile')->name('updateProfile');
+Route::post('/admin/updatePassword', 'UserController@updatePassword')->name('updatePassword');
 
 Auth::routes();
 
@@ -178,3 +189,5 @@ Route::post('forget-password', 'Auth\ForgotPasswordController@postEmail')->name(
 
 Route::get('reset-password/{token}', 'Auth\ResetPasswordController@getPassword');
 Route::post('reset-password', 'Auth\ResetPasswordController@updatePassword')->name('reset-password');
+
+Route::get('/getEventStream', 'StreamEvent@getEventStream');

@@ -9,7 +9,8 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
-use SimpleXMLElement;
+use Spatie\ArrayToXml\ArrayToXml;
+use Illuminate\Http\Response;
 
 class AuthController extends Controller
 {
@@ -38,23 +39,30 @@ class AuthController extends Controller
 
 
         Log::channel('stderr')->info('Something happened!  login');
-        $xml = new SimpleXMLElement('<root/>');
+        // $xml = new SimpleXMLElement('<root/>');
 
         if ($validator->fails()) {
+            $content = $validator->errors();
+            $result = ArrayToXml::convert($content);
+            return response($result, 200)->header('Content-Type', 'text/xml');
 
-            array_walk_recursive($validator->errors(), array ($xml, 'addChild'));
-            return $xml->asXML();
             // return response()->json($validator->errors(), 200);
         }
         if (!$token =auth('api')->attempt($credentials)) {
-            array_walk_recursive(['error' => 'Unauthorized'], array ($xml, 'addChild'));
-            return $xml->asXML();
+            $content = ['error' => 'Unauthorized'];
+            $result = ArrayToXml::convert($content);
+            return response($result, 200)->header('Content-Type', 'text/xml');
             // return response()->json(['error' => 'Unauthorized'], 200);
         }
 
-        array_walk_recursive($this->createNewToken($token), array ($xml, 'addChild'));
-        return $xml->asXML();
-        // return $this->createNewToken($token);
+        $content = [
+            'access_token' => $token,
+            'token_type' => 'bearer',
+            'expires_in' => auth('api')->factory()->getTTL() * 60,
+            'user' => auth('api')->user()
+        ];
+        $result = ArrayToXml::convert($content);
+        return response($result, 200)->header('Content-Type', 'text/xml');
     }
 
     public function me()

@@ -176,7 +176,10 @@ body {
             left: 2em; } }
         @media screen and (max-width: 360px) {
           #footer {
-            left: 1.25em; } }
+            /* left: 1.25em;  */
+            left: 0px;
+          }
+        }
         @media screen and (max-height: 640px) {
           #footer {
             bottom: auto;
@@ -253,3 +256,74 @@ a {
 div.container.content{
     min-height: calc(100vh - 350px);
 }
+.btn-update-user{
+    margin-top: 40px;
+    margin-left: 0px !important;
+}
+#frm_register .leading-tight{
+    margin-top: 20px;
+}
+.mobile-nav{
+    display: none;
+}
+.mobile-nav a{
+
+}
+@media only screen and (max-width: 600px) {
+    .category {
+        min-width: 300px;
+    }
+    .dashboard .category a{
+        padding: 30px;
+    }
+    body .logo img{
+        width: 25vw;
+        height: auto;
+    }
+    .mobile-nav{
+        display: block;
+        text-align: right;
+        width: 100%;
+    }
+    .mobile-nav .menu{
+        text-align: left;
+        display: none;
+        width: calc(100vw - 40px);
+        margin-left: calc(-25vw);
+        background-color: #fff;
+    }
+    .mobile-nav .menu>a, .mobile-nav form{
+        width: 100%;
+        padding: 20px;
+    }
+    .mobile-nav i{
+        margin-bottom: 40px;
+    }
+    .mobile-nav.active .menu{
+        display: grid;
+    }
+    .mobile-nav i{
+        color: #fff;
+    }
+    .navigation{
+        display:none;
+    }
+    body header{
+        width: calc(100% - 40px);
+        display: flex;
+        z-index: 100;
+    }
+    #footer > :last-child{
+        /* display: grid; */
+    }
+}
+
+@media only screen and (max-width: 450px) {
+    .category {
+        min-width: 200px;
+    }
+    .dashboard .category a{
+        padding: 20px;
+    }
+}
+

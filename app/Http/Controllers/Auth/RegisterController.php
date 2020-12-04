@@ -111,6 +111,7 @@ class RegisterController extends Controller
             'cashapp' => $data['cashapp'],
             'allowed' => $data['allowed'],
             'userType' => $data['userType'],
+            'stream_key' => $data['stream_key']
         ]);
     }
 
@@ -159,7 +160,8 @@ class RegisterController extends Controller
                 'verification_code' => ['required', 'string', 'max:255'],
             ]);
             $request->merge([
-                'allowed' => false
+                'allowed' => false,
+                'stream_key' => $this->getkey()
             ]);
             $video = Video::where('email', '=', $request->input('email'))->where('verification_code', '=', $request->input('verification_code'))->first();
             if($video == null){
@@ -184,7 +186,8 @@ class RegisterController extends Controller
                 'venmo' => '',
                 'cashapp' => '',
                 'allowed' => false,
-                'verification_code' => ''
+                'verification_code' => '',
+                'stream_key' => $this->genkey()
             ]);
         }
         if($validator->fails()){
@@ -207,5 +210,9 @@ class RegisterController extends Controller
             return redirect()->route('login')->with(session()->flash('alert-success', 'Your account is verified. Please login!'));
         }
         return redirect()->route('login')->with(session()->flash('alert-danger', 'Invalid verification code!'));
+    }
+
+    public function genkey() {
+        return bin2hex(openssl_random_pseudo_bytes(10));
     }
 }

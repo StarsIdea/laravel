@@ -47,12 +47,36 @@
                 <a class="mr-3" href="{{ route('userType') }}">Register</a>
             @else
                 <a class="mr-3" href="{{ route('support') }}">Support</a>
-                <a class="mr-3" href="{{ route('dashboard') }}">{{ Auth::user()->name }}</a>
+                <a class="mr-3" href="{{ route('dashboard') }}">Dashboard</a>
+                <a class="mr-3" href="{{ route('user-public-page') }}">{{ Auth::user()->name }}</a>
                 <form class="d-inline-block" method="POST" action="{{ route('logout') }}">
                     @csrf
                     <a class="mr-3" href="#" onclick="event.preventDefault(); this.closest('form').submit();">Logout</a>
                 </form>
             @endif
+        </div>
+
+        <div class="mobile-nav">
+            <i class="fa fa-bars"></i>
+            <div class="menu">
+                <a class="mr-3" href="{{ route('audition') }}">Audition</a>
+                <a class="mr-3" href="{{ route('about') }}">About</a>
+                <a class="mr-3" href="{{ route('playing') }}">Playing</a>
+                <a class="mr-3" href="{{ route('faq') }}">Faq</a>
+
+                @if (!Auth::user())
+                    <a class="mr-3" href="{{ route('login') }}">Login</a>
+                    <a class="mr-3" href="{{ route('userType') }}">Register</a>
+                @else
+                    <a class="mr-3" href="{{ route('support') }}">Support</a>
+                    <a class="mr-3" href="{{ route('dashboard') }}">Dashboard</a>
+                    <a class="mr-3" href="{{ route('user-public-page') }}">{{ Auth::user()->name }}</a>
+                    <form class="d-inline-block" method="POST" action="{{ route('logout') }}">
+                        @csrf
+                        <a class="mr-3" href="#" onclick="event.preventDefault(); this.closest('form').submit();">Logout</a>
+                    </form>
+                @endif
+            </div>
         </div>
     </header>
 
@@ -71,6 +95,15 @@
         </ul>
     </footer>
     @yield('extra-js')
+    <script>
+        $(document).ready(function(){
+            $('.mobile-nav i').click(function(){
+                $('.mobile-nav').toggleClass('active');
+                $(this).toggleClass('fa-bars');
+                $(this).toggleClass('fa-times');
+            });
+        });
+    </script>
 </body>
 
 </html>
