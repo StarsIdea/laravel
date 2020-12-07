@@ -161,7 +161,7 @@ class RegisterController extends Controller
             ]);
             $request->merge([
                 'allowed' => false,
-                'stream_key' => $this->getkey()
+                'stream_key' => bin2hex(openssl_random_pseudo_bytes(10))
             ]);
             $video = Video::where('email', '=', $request->input('email'))->where('verification_code', '=', $request->input('verification_code'))->first();
             if($video == null){
@@ -187,7 +187,7 @@ class RegisterController extends Controller
                 'cashapp' => '',
                 'allowed' => false,
                 'verification_code' => '',
-                'stream_key' => $this->genkey()
+                'stream_key' => bin2hex(openssl_random_pseudo_bytes(10))
             ]);
         }
         if($validator->fails()){
