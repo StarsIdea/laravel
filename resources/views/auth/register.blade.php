@@ -37,6 +37,9 @@
         background-repeat: no-repeat !important;
         background-size: cover !important;
     }
+    #file-error, label.error{
+        color:red;
+    }
 </style>
 <div class="loader"></div>
 <div class="overlay"></div>
@@ -96,14 +99,121 @@
             </h2>
             <input type="hidden" name="photo" value="">
             <input type="hidden" name="userType" value="{{ $userType }}">
+
+            @if($userType == "talent")
             <div>
-                @if($userType == "talent")
                 <x-jet-label value="{{ __('Name') }}" />
-                <x-jet-input class="block mt-1 w-full" type="text" name="name" :value="old('name')" required autofocus autocomplete="name" />
-                @elseif ($userType == "venue")
+                <x-jet-input class="block mt-1 w-full" type="text" name="name" value="{{ $video->name }}" required autofocus autocomplete="name" />
+            </div>
+
+            <div class="mt-4 address">
+                <div class="mt-4">
+                    <x-jet-label value="{{ __('City') }}" />
+                    <x-jet-input class="block mt-1 w-full" type="text" name="city" value="{{ $video->city }}" required />
+                </div>
+                <div class="mt-4">
+                    <x-jet-label value="{{ __('State') }}" />
+                    <x-jet-input class="block mt-1 w-full" type="text" name="state" value="{{ $video->state }}" required />
+                </div>
+
+                <div class="mt-4">
+                    <x-jet-label value="{{ __('Zip') }}" />
+                    <x-jet-input class="block mt-1 w-full" type="text" name="zip" value="{{ $video->zip }}" required />
+                </div>
+            </div>
+
+            <div class="mt-4">
+                <x-jet-label value="{{ __('Email') }}" />
+                <x-jet-input class="block mt-1 w-full" type="email" name="email" value="{{ app('request')->input('email') }}" readonly required id="email"/>
+            </div>
+
+            <div class="mt-4">
+                <x-jet-label value="{{ __('Verification Code') }}" />
+                <x-jet-input class="block mt-1 w-full" type="text" name="verification_code" value="{{ app('request')->input('verification_code') }}" required readonly id="verification_code"/>
+            </div>
+
+            <div class="mt-4">
+                <x-jet-label value="{{ __('Telephone') }}" />
+                <x-jet-input class="block mt-1 w-full" type="text" name="telephone" value="{{ $video->telephone }}" required />
+            </div>
+
+            <div class="mt-4">
+                <x-jet-label value="{{ __('Password') }}" />
+                <x-jet-input class="block mt-1 w-full" type="password" name="password" id="password" required autocomplete="new-password" />
+            </div>
+
+            <div class="mt-4">
+                <x-jet-label value="{{ __('Confirm Password') }}" />
+                <x-jet-input class="block mt-1 w-full" type="password" name="password_confirmation" required autocomplete="new-password" />
+            </div>
+
+            <h2 class="font-semibold text-xl text-gray-800 leading-tight">
+                {{ __('Talent Info') }}
+            </h2>
+
+            <div>
+                <x-jet-label value="{{ __('Band / Stage Name') }}" />
+                <x-jet-input class="block mt-1 w-full" type="text" name="band" value="{{ $video->band }}" required autofocus autocomplete="band" />
+            </div>
+
+            <div>
+                <x-jet-label value="{{ __('Genre') }}" />
+                <x-jet-input class="block mt-1 w-full" type="text" name="genre" value="{{ $video->genre }}" required autofocus autocomplete="genre" />
+            </div>
+
+            <div>
+                <x-jet-label value="{{ __('Location') }}" />
+                <x-jet-input class="block mt-1 w-full" type="text" name="location" value="{{ $video->location }}" required autofocus autocomplete="location" />
+            </div>
+
+            <h2 class="font-semibold text-xl text-gray-800 leading-tight">
+                {{ __('Social Media') }}
+            </h2>
+
+            <div>
+                <x-jet-label value="{{ __('Website') }}" />
+                <x-jet-input class="block mt-1 w-full" type="text" name="website" :value="old('website')" autofocus autocomplete="website" />
+            </div>
+
+            <div>
+                <x-jet-label value="{{ __('Facebook') }}" />
+                <x-jet-input class="block mt-1 w-full" type="text" name="facebook" :value="old('facebook')" autofocus autocomplete="facebook" />
+            </div>
+
+            <div>
+                <x-jet-label value="{{ __('Instagram') }}" />
+                <x-jet-input class="block mt-1 w-full" type="text" name="instagram" :value="old('instagram')" autofocus autocomplete="instagram" />
+            </div>
+
+            <div>
+                <x-jet-label value="{{ __('Twitter') }}" />
+                <x-jet-input class="block mt-1 w-full" type="text" name="twitter" :value="old('twitter')" autofocus autocomplete="twitter" />
+            </div>
+
+            <h2 class="font-semibold text-xl text-gray-800 leading-tight">
+                {{ __('Tips') }}
+            </h2>
+
+            <div>
+                <x-jet-label value="{{ __('Paypal') }}" />
+                <x-jet-input class="block mt-1 w-full" type="text" name="paypal" :value="old('paypal')" autofocus autocomplete="paypal" />
+            </div>
+
+            <div>
+                <x-jet-label value="{{ __('Venmo') }}" />
+                <x-jet-input class="block mt-1 w-full" type="text" name="venmo" :value="old('venmo')" autofocus autocomplete="venmo" />
+            </div>
+
+            <div>
+                <x-jet-label value="{{ __('CashApp') }}" />
+                <x-jet-input class="block mt-1 w-full" type="text" name="cashapp" :value="old('cashapp')" autofocus autocomplete="cashapp" />
+            </div>
+            {{-- ------------------------------------------------------------------------ --}}
+            @elseif ($userType == "venue")
+
+            <div>
                 <x-jet-label value="{{ __('Contact Name') }}" />
                 <x-jet-input class="block mt-1 w-full" type="text" name="contactName" :value="old('contactName')" required autofocus autocomplete="contactName" />
-                @endif
             </div>
 
             <div class="mt-4 address">
@@ -122,23 +232,10 @@
                 </div>
             </div>
 
-            @if($userType == "talent")
-            <div class="mt-4">
-                <x-jet-label value="{{ __('Email') }}" />
-            <x-jet-input class="block mt-1 w-full" type="email" name="email" value="{{ app('request')->input('email') }}" readonly required id="email"/>
-            </div>
-            @else
             <div class="mt-4">
                 <x-jet-label value="{{ __('Email') }}" />
                 <x-jet-input class="block mt-1 w-full" type="email" name="email" :value="old('email')" required />
             </div>
-            @endif
-            @if($userType == "talent")
-            <div class="mt-4">
-                <x-jet-label value="{{ __('Verification Code') }}" />
-                <x-jet-input class="block mt-1 w-full" type="text" name="verification_code" value="{{ app('request')->input('verification_code') }}" required readonly id="verification_code"/>
-            </div>
-            @endif
 
             <div class="mt-4">
                 <x-jet-label value="{{ __('Telephone') }}" />
@@ -156,21 +253,12 @@
             </div>
 
             <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-                @if($userType == "talent")
-                {{ __('Talent Info') }}
-                @elseif($userType == "venue")
                 {{ __('Venue Info') }}
-                @endif
             </h2>
 
             <div>
-                @if($userType == "talent")
-                <x-jet-label value="{{ __('Band / Stage Name') }}" />
-                <x-jet-input class="block mt-1 w-full" type="text" name="band" :value="old('band')" required autofocus autocomplete="band" />
-                @elseif($userType == "venue")
                 <x-jet-label value="{{ __('Venue Name') }}" />
                 <x-jet-input class="block mt-1 w-full" type="text" name="venueName" :value="old('venueName')" required autofocus autocomplete="venueName" />
-                @endif
             </div>
 
             <div>
@@ -208,28 +296,7 @@
                 <x-jet-label value="{{ __('Twitter') }}" />
                 <x-jet-input class="block mt-1 w-full" type="text" name="twitter" :value="old('twitter')" autofocus autocomplete="twitter" />
             </div>
-            @if($userType == "talent")
-            <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-                {{ __('Tips') }}
-            </h2>
-
-            <div>
-                <x-jet-label value="{{ __('Paypal') }}" />
-                <x-jet-input class="block mt-1 w-full" type="text" name="paypal" :value="old('paypal')" autofocus autocomplete="paypal" />
-            </div>
-
-            <div>
-                <x-jet-label value="{{ __('Venmo') }}" />
-                <x-jet-input class="block mt-1 w-full" type="text" name="venmo" :value="old('venmo')" autofocus autocomplete="venmo" />
-            </div>
-
-            <div>
-                <x-jet-label value="{{ __('CashApp') }}" />
-                <x-jet-input class="block mt-1 w-full" type="text" name="cashapp" :value="old('cashapp')" autofocus autocomplete="cashapp" />
-            </div>
             @endif
-
-
 
             <div class="flex items-center justify-end mt-4">
                 <a class="underline text-sm text-gray-600 hover:text-gray-900" href="{{ route('login') }}">

@@ -139,7 +139,15 @@ class RegisterController extends Controller
         $attributes = $postObject->getFormAttributes();
         $inputs = $postObject->getFormInputs();
         $userType = $request->input('userType');
-        return view('auth.register', compact(['attributes', 'inputs', 'userType']));
+        if($userType == "talent"){
+            $video = Video::where('verification_code','=',$request->input('verification_code'))->first();
+            return view('auth.register', compact(['attributes', 'inputs', 'userType', 'video']));
+        }
+        else{
+            return view('auth.register', compact(['attributes', 'inputs', 'userType']));
+        }
+
+
     }
     public function register(Request $request){
         // $validator = $this->validator($request->all())->validate();
