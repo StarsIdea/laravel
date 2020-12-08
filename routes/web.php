@@ -15,7 +15,6 @@ use App\Http\Controllers\AuthController;
 | contains the "web" middleware group. Now create something great!
 |
 */
-// Auth::routes(['verify' => true]);
 Route::get('/email/verify', function () {
     return view('auth.verify-email');
 })->middleware(['auth'])->name('verification.notice');
@@ -36,10 +35,6 @@ Route::get('/', function () {
     session('redirectTo', 'home');
     return view('home');
 });
-
-// Route::get('profile', function(){
-
-// })->middleware('verified');
 
 Route::middleware(['auth:sanctum', 'verified'])->group(function () {
     Route::get('dashboard', 'UserController@dashboard')->name('dashboard')->middleware('verified');
@@ -62,29 +57,16 @@ Route::get('faq', function () {
 
 Route::get('support', 'HomeController@support')->name('support');
 Route::get('terms', 'HomeController@terms')->name('terms');
-// Route::get('audition', 'AuditionController@index')->name('audition');
-
-// Route::post('/audition', function() {
-//     $file = request()->file;
-//     $filename = uniqid(time()."-") . "." . $file->extension();
-//     // $path = $file->store('public', $filename);
-//     $path = $file->storePubliclyAs('private', $filename);
-//     return redirect("/show?path=$path");
-// });
 
 Route::get('show', function() {
 
     $path = request()->query('path');
-    // $path = request()->query('key');
     $url = "/file?path=$path";
-    // $url = Storage::temporaryUrl($path, '+10 minutes');
-    // $url = \Storage::url($path);
-
     return view('show', compact('url'));
-
 });
 
 Route::get('audition', function() {
+
     $adapter = Storage::getAdapter();
     $client = $adapter->getClient();
     $bucket = $adapter->getBucket();
@@ -109,26 +91,6 @@ Route::get('audition', function() {
     return view('audition', compact(['attributes', 'inputs']));
 })->name('audition');
 
-// Route::get('file', function() {
-//     // $path = request()->query('path');
-//     // $full_path = storage_path('app') . "/$path";
-
-//     // return response()->file($full_path);
-//     $path = request()->query('path');
-
-//     $fs = Storage::getDriver();
-//     $stream = $fs->readStream($path);
-
-//     $headers = [
-//         'Content-Type' => $fs->getMimetype($path),
-//         'Content-Length' => $fs->getSize($path),
-//     ];
-
-//     return response()->stream(function() use ($stream) {
-//         fpassthru($stream);
-//     }, 200, $headers);
-// });
-
 Route::post('subscribe', 'UserController@subscribe')->name('subscribe');
 
 Route::get('/images', 'VideoController@getImages')->name('videos');
@@ -144,35 +106,43 @@ Route::get('/userType',function(){
 Route::get('/dashboard','HomeController@dashboard')->name('dashboard');
 Route::get('/download/{id}','HomeController@download');
 Route::get('/check_verification_code', 'AuditionController@check_verification_code');
-// Route::get('/admin/performer',function(){
-//     return view('admin.performer-list');
-// });
-Route::get('/admin/audition','AuditionController@auditionList')->middleware(['auth']);
-Route::get('/admin/performer','HomeController@performerList')->name('performerList');
-Route::get('/admin/venue','HomeController@venueList')->name('venueList');
-Route::get('/admin/audition/approve/{id}', 'AuditionController@auditionApprove');
-Route::get('/admin/stream_key_code', 'UserController@streamKeyCode');
-Route::post('/admin/update_stream_key_code', 'UserController@updateStreamKeyCode');
-Route::get('/admin/eventList/{eventType}', 'UserController@eventList');
-Route::get('/admin/addEvent', 'UserController@addEventForm');
-Route::get('/admin/editEvent/{id}', 'UserController@editEventForm');
-Route::post('/admin/addEvent', 'UserController@addEvent');
-Route::post('/admin/editEvent/{id}', 'UserController@editEvent');
-Route::get('/admin/userProfile', 'UserController@profile')->name('current_user_profile');
-Route::get('/admin/userPublicPage', 'UserController@userPublicPage')->name('user-public-page');
-Route::post('/admin/updateProfile', 'UserController@updateProfile')->name('updateProfile');
-Route::post('/admin/updatePassword', 'UserController@updatePassword')->name('updatePassword');
+
+Route::group([
+        'middleware' => 'auth',
+        'prefix' => 'admin'
+    ],
+    function ($router) {
+        Route::get('/audition','AuditionController@auditionList');
+        Route::get('/performer','HomeController@performerList')->name('performerList');
+        Route::get('/venue','HomeController@venueList')->name('venueList');
+        Route::get('/audition/approve/{id}', 'AuditionController@auditionApprove');
+        Route::get('/stream_key_code', 'UserController@streamKeyCode');
+        Route::post('/update_stream_key_code', 'UserController@updateStreamKeyCode');
+        Route::get('/eventList/{eventType}', 'UserController@eventList');
+        Route::get('/addEvent', 'UserController@addEventForm');
+        Route::get('/editEvent/{id}', 'UserController@editEventForm');
+        Route::post('/addEvent', 'UserController@addEvent');
+        Route::post('/editEvent/{id}', 'UserController@editEvent');
+        Route::get('/userProfile', 'UserController@profile')->name('current_user_profile');
+        Route::get('/userPublicPage', 'UserController@userPublicPage')->name('user-public-page');
+        Route::post('/updateProfile', 'UserController@updateProfile')->name('updateProfile');
+        Route::post('/updatePassword', 'UserController@updatePassword')->name('updatePassword');
+        Route::get('/allow/{userType}/{id}','AdminController@allowed');
+    }
+);
+
+Route::get('/getEventStream', 'StreamEvent@getEventStream');
 
 Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 Route::get('/verify','Auth\RegisterController@verifyUser')->name('verify.user');
-Route::get('/admin/allow/{userType}/{id}','AdminController@allowed');
+
 
 Route::group([
-    'middleware' => 'api',
-    'prefix' => 'auth'
-],
+        'middleware' => 'api',
+        'prefix' => 'auth'
+    ],
     function ($router) {
         Route::post('/login', 'AuthController@login');
         Route::post('/register', 'AuthController@register');
@@ -190,4 +160,4 @@ Route::post('forget-password', 'Auth\ForgotPasswordController@postEmail')->name(
 Route::get('reset-password/{token}', 'Auth\ResetPasswordController@getPassword');
 Route::post('reset-password', 'Auth\ResetPasswordController@updatePassword')->name('reset-password');
 
-Route::get('/getEventStream', 'StreamEvent@getEventStream');
+
