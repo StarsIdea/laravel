@@ -63,7 +63,7 @@
             display: none;
         }
         body div.min-h-screen.pt-6{
-            padding: 100px 60px;
+            padding: 0px 60px;
             background-repeat: no-repeat !important;
             background-size: cover !important;
         }
