@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 use Spatie\ArrayToXml\ArrayToXml;
 use Illuminate\Http\Response;
+use JWTAuth;
 
 class AuthController extends Controller
 {
@@ -21,7 +22,7 @@ class AuthController extends Controller
      */
     public function __construct(Request $request)
     {
-        $this->middleware('auth:api', ['except' => ['login', 'register', 'auth_test']]);
+        // $this->middleware('auth:api', ['except' => ['login', 'register', 'auth_test']]);
     }
 
     /**
@@ -42,13 +43,15 @@ class AuthController extends Controller
         // $xml = new SimpleXMLElement('<root/>');
 
         if ($validator->fails()) {
-            $content = $validator->errors();
+            $content = ['error' => $validator->errors()->toArray()];
+            // $content = ['error' => $validator->errors()];
             $result = ArrayToXml::convert($content);
             return response($result, 200)->header('Content-Type', 'text/xml');
 
             // return response()->json($validator->errors(), 200);
         }
-        if (!$token =auth('api')->attempt($credentials)) {
+        // if (!$token =auth('api')->attempt($credentials)) {
+        if (!$token =JWTAuth::attempt($credentials)) {
             $content = ['error' => 'Unauthorized'];
             $result = ArrayToXml::convert($content);
             return response($result, 200)->header('Content-Type', 'text/xml');
@@ -58,8 +61,10 @@ class AuthController extends Controller
         $content = [
             'access_token' => $token,
             'token_type' => 'bearer',
-            'expires_in' => auth('api')->factory()->getTTL() * 60,
-            'user' => auth('api')->user()
+            // 'expires_in' => auth('api')->factory()->getTTL() * 60,
+            'expires_in' => JWTAuth::factory()->getTTL() * 60,
+            // 'user' => auth('api')->user(),
+            'user' => JWTAuth::user()->toArray()
         ];
         $result = ArrayToXml::convert($content);
         return response($result, 200)->header('Content-Type', 'text/xml');
@@ -67,7 +72,10 @@ class AuthController extends Controller
 
     public function me()
     {
-        return response()->json($this->guard()->user(), 200);
+        // return response()->json($this->guard()->user(), 200);
+        $content = ['user' => $this->guard()->user()];
+        $result = ArrayToXml::convert($content);
+        return response($result, 200)->header('Content-Type', 'text/xml');
     }
 
     /**
@@ -92,10 +100,16 @@ class AuthController extends Controller
             ['password' => bcrypt($request->password)]
         ));
 
-        return response()->json([
+        // return response()->json([
+        //     'message' => 'User successfully registered',
+        //     'user' => $user
+        // ], 201);
+        $content = [
             'message' => 'User successfully registered',
             'user' => $user
-        ], 201);
+        ];
+        $result = ArrayToXml::convert($content);
+        return response($result, 200)->header('Content-Type', 'text/xml');
     }
 
 
@@ -105,9 +119,13 @@ class AuthController extends Controller
      * @return \Illuminate\Http\JsonResponse
      */
     public function logout() {
-        auth('api')->logout();
+        // auth('api')->logout();
+        JWTAuth::logout();
 
-        return response()->json(['message' => 'User successfully signed out']);
+        // return response()->json(['message' => 'User successfully signed out']);
+        $content = ['message' => 'User successfully signed out'];
+        $result = ArrayToXml::convert($content);
+        return response($result, 200)->header('Content-Type', 'text/xml');
     }
 
     /**
@@ -116,7 +134,10 @@ class AuthController extends Controller
      * @return \Illuminate\Http\JsonResponse
      */
     public function refresh() {
-        return $this->createNewToken(auth('api')->refresh());
+        // return $this->createNewToken(auth('api')->refresh());
+        // return $this->createNewToken(JWTAuth::refresh());
+        $result = ArrayToXml::convert($this->createNewToken(JWTAuth::refresh()));
+        return response($result, 200)->header('Content-Type', 'text/xml');
     }
 
     /**
@@ -126,7 +147,43 @@ class AuthController extends Controller
      */
     public function userProfile()
     {
-        return response()->json(auth()->user());
+        // return response()->json(auth()->user());
+        try {
+
+                if (! $user = JWTAuth::parseToken()->authenticate()) {
+                    // return response()->json(['user_not_found'], 404);
+                    $content = ['error' => 'user_not_found'];
+                    $result = ArrayToXml::convert($content);
+                    return response($result, 200)->header('Content-Type', 'text/xml');
+                }
+
+        } catch (\Tymon\JWTAuth\Exceptions\TokenExpiredException $e) {
+
+                // return response()->json(['token_expired'], $e->getStatusCode());
+            $content = ['error' => 'token_expired'];
+            $result = ArrayToXml::convert($content);
+            return response($result, 200)->header('Content-Type', 'text/xml');
+
+        } catch (\Tymon\JWTAuth\Exceptions\TokenInvalidException $e) {
+
+                // return response()->json(['token_invalid'], $e->getStatusCode());
+            $content = ['error' => 'token_invalid'];
+            $result = ArrayToXml::convert($content);
+            return response($result, 200)->header('Content-Type', 'text/xml');
+
+        } catch (\Tymon\JWTAuth\Exceptions\JWTException $e) {
+
+                // return response()->json(['token_absent'], $e->getStatusCode());
+            $content = ['error' => 'token_absent'];
+            $result = ArrayToXml::convert($content);
+            return response($result, 200)->header('Content-Type', 'text/xml');
+
+        }
+
+        // return response()->json(compact('user'));
+        $content = ['user' => $user];
+        $result = ArrayToXml::convert($content);
+        return response($result, 200)->header('Content-Type', 'text/xml');
     }
 
     /**
@@ -137,12 +194,21 @@ class AuthController extends Controller
      * @return \Illuminate\Http\JsonResponse
      */
     protected function createNewToken($token){
-        return response()->json([
+        // return response()->json([
+        //     'access_token' => $token,
+        //     'token_type' => 'bearer',
+        //     // 'expires_in' => auth('api')->factory()->getTTL() * 60,
+        //     // 'user' => auth('api')->user()
+        //     'expires_in' => JWTAuth::factory()->getTTL() * 60,
+        //     'user' => JWTAuth::user(),
+        // ]);
+        return [
             'access_token' => $token,
             'token_type' => 'bearer',
-            'expires_in' => auth('api')->factory()->getTTL() * 60,
-            'user' => auth('api')->user()
-        ]);
+            'expires_in' => JWTAuth::factory()->getTTL() * 60,
+            'user' => JWTAuth::user()->toArray(),
+        ];
+
     }
 
     public function auth_test()
@@ -152,6 +218,7 @@ class AuthController extends Controller
 
     public function guard()
     {
-        return Auth::guard('api');
+        // return Auth::guard('api');
+        return JWTAuth::user()->toArray();
     }
 }

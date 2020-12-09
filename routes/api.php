@@ -17,3 +17,28 @@ use Illuminate\Support\Facades\Route;
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
+
+Route::post('/auth/login', 'AuthController@login');
+Route::post('/auth/register', 'AuthController@register');
+
+Route::group([
+        'middleware' => 'jwt.verify',
+        'prefix' => 'auth'
+    ],
+    function ($router) {
+        // Route::post('/login', 'AuthController@login');
+        // Route::post('/register', 'AuthController@register');
+        Route::post('/logout', 'AuthController@logout');
+        Route::post('/refresh', 'AuthController@refresh');
+        Route::get('/user-profile', 'AuthController@userProfile');
+    }
+);
+
+// Route::post('register', 'AuthController@register');
+// Route::post('login', 'AuthController@authenticate');
+// Route::get('open', 'DataController@open');
+
+// Route::group(['middleware' => ['jwt.verify']], function() {
+//     Route::get('user', 'AuthController@getAuthenticatedUser');
+//     Route::get('closed', 'DataController@closed');
+// });

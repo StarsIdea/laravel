@@ -103,7 +103,7 @@ Route::get('/userType',function(){
     return view('/auth/userType');
 })->name('userType');
 
-Route::get('/dashboard','HomeController@dashboard')->name('dashboard');
+Route::get('/dashboard','HomeController@dashboard')->name('dashboard')->middleware('auth');
 Route::get('/download/{id}','HomeController@download');
 Route::get('/check_verification_code', 'AuditionController@check_verification_code');
 
@@ -137,20 +137,6 @@ Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 Route::get('/verify','Auth\RegisterController@verifyUser')->name('verify.user');
-
-
-Route::group([
-        'middleware' => 'api',
-        'prefix' => 'auth'
-    ],
-    function ($router) {
-        Route::post('/login', 'AuthController@login');
-        Route::post('/register', 'AuthController@register');
-        Route::post('/logout', 'AuthController@logout');
-        Route::post('/refresh', 'AuthController@refresh');
-        Route::get('/user-profile', 'AuthController@userProfile');
-    }
-);
 
 Route::get('/test', 'AuthController@auth_test');
 
