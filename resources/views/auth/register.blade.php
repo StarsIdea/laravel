@@ -123,6 +123,19 @@
             </div>
 
             <div class="mt-4">
+                <x-jet-label value="{{ __('TimeZone') }}" />
+                {{-- <x-jet-input class="block mt-1 w-full" type="email" name="email" value="{{ $video->email }}" required id="email"/> --}}
+                <select class="block mt-1 w-full" name="timezone">
+                <option>Select TimeZone</option>
+                @foreach ($timezone_list as $timezone)
+                    <option value="{{ $timezone->Time_zone_id }}">
+                        {{ $timezone->name }}
+                    </option>
+                @endforeach
+                </select>
+            </div>
+
+            <div class="mt-4">
                 <x-jet-label value="{{ __('Email') }}" />
                 <x-jet-input class="block mt-1 w-full" type="email" name="email" value="{{ $video->email }}" required id="email"/>
             </div>
@@ -230,6 +243,20 @@
                     <x-jet-label value="{{ __('Zip') }}" />
                     <x-jet-input class="block mt-1 w-full" type="text" name="zip" :value="old('zip')" required />
                 </div>
+            </div>
+
+            <div class="mt-4">
+                <x-jet-label value="{{ __('TimeZone') }}" />
+                {{-- <x-jet-input class="block mt-1 w-full" type="email" name="email" value="{{ $video->email }}" required id="email"/> --}}
+
+                <select class="block mt-1 w-full" name="timezone">
+                @foreach ($timezone_list as $timezone)
+                    <?php print_r($timezone->Name); ?>
+                    <option value="{{ $timezone->Time_zone_id }}">
+                        {{ $timezone->Name }}
+                    </option>
+                @endforeach
+                </select>
             </div>
 
             <div class="mt-4">

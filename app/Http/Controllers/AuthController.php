@@ -23,6 +23,11 @@ class AuthController extends Controller
     public function __construct(Request $request)
     {
         // $this->middleware('auth:api', ['except' => ['login', 'register', 'auth_test']]);
+        if($request->input('status') == 'expired'){
+            $content = ['error' => 'Expired', 'new' => $this->createNewToken(JWTAuth::refresh())];
+            $result = ArrayToXml::convert($content);
+            return response($result, 200)->header('Content-Type', 'text/xml');
+        }
     }
 
     /**

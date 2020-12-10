@@ -17,6 +17,8 @@ use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use App\Http\Controllers\MailController;
+use Illuminate\Support\Facades\DB;
+
 class RegisterController extends Controller
 {
     /*
@@ -111,7 +113,8 @@ class RegisterController extends Controller
             'cashapp' => $data['cashapp'],
             'allowed' => $data['allowed'],
             'userType' => $data['userType'],
-            'stream_key' => $data['stream_key']
+            'stream_key' => $data['stream_key'],
+            'timezoneid' => $data['timezone']
         ]);
     }
 
@@ -139,12 +142,13 @@ class RegisterController extends Controller
         $attributes = $postObject->getFormAttributes();
         $inputs = $postObject->getFormInputs();
         $userType = $request->input('userType');
+        $timezone_list = DB::select('select * from mysql.time_zone_name');
         if($userType == "talent"){
             $video = Video::where('verification_code','=',$request->input('verification_code'))->first();
-            return view('auth.register', compact(['attributes', 'inputs', 'userType', 'video']));
+            return view('auth.register', compact(['attributes', 'inputs', 'userType', 'video', 'timezone_list']));
         }
         else{
-            return view('auth.register', compact(['attributes', 'inputs', 'userType']));
+            return view('auth.register', compact(['attributes', 'inputs', 'userType', 'timezone_list']));
         }
 
 
@@ -166,6 +170,7 @@ class RegisterController extends Controller
                 'genre' => ['required', 'string', 'max:255'],
                 'location' => ['required', 'string', 'max:255'],
                 'verification_code' => ['required', 'string', 'max:255'],
+                'timezone' => ['required', 'string', 'max:255'],
             ]);
             $request->merge([
                 'allowed' => false,
@@ -188,6 +193,7 @@ class RegisterController extends Controller
                 'venueName' => ['required', 'string', 'max:255'],
                 'genre' => ['required', 'string', 'max:255'],
                 'location' => ['required', 'string', 'max:255'],
+                'timezone' => ['required', 'string', 'max:255'],
             ]);
             $request->merge([
                 'paypal' => '',
