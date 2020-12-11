@@ -34,6 +34,8 @@ Route::group([
     }
 );
 
+Route::post('/app/rstream', 'RStreamController@getData');
+
 // Route::post('register', 'AuthController@register');
 // Route::post('login', 'AuthController@authenticate');
 // Route::get('open', 'DataController@open');
