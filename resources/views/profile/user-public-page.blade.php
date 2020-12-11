@@ -167,7 +167,10 @@
             .public-page-url a{
                 text-decoration: underline;
             }
-
+            .dashboard{
+                width: 100%;
+                max-width: 800px;
+            }
     </style>
     <link rel="stylesheet" href="{{ asset('css/home.css') }}" />
 @endsection
