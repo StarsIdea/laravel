@@ -34,7 +34,9 @@ Route::group([
     }
 );
 
-Route::get('/app/rstream', 'RStreamController@getData');
+Route::group(['middleware' => ['jwt.verify']], function() {
+    Route::get('/app/rstream', 'RStreamController@getData');
+});
 
 // Route::post('register', 'AuthController@register');
 // Route::post('login', 'AuthController@authenticate');
