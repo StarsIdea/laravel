@@ -187,7 +187,7 @@
                 </div>
                 <div class="col-md-12 stream-key">
                     <div class="sub-title">Stream Key: {{ Auth::user()->stream_key }}</div>
-                    <a href="/admin/stream_key_code" class="btn btn-change">Change</a>
+                    <a href="/admin/change_stream_key_code" class="btn btn-change">Change</a>
                 </div>
                 <div class="col-md-12 upcoming">
                     <div class="col-md-12 sub-item">

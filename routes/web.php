@@ -118,11 +118,13 @@ Route::group([
         Route::get('/audition/approve/{id}', 'AuditionController@auditionApprove');
         Route::get('/stream_key_code', 'UserController@streamKeyCode');
         Route::post('/update_stream_key_code', 'UserController@updateStreamKeyCode');
+        Route::get('/change_stream_key_code', 'UserController@changeStreamKeyCode');
         Route::get('/eventList/{eventType}', 'UserController@eventList');
         Route::get('/addEvent', 'UserController@addEventForm');
         Route::get('/editEvent/{id}', 'UserController@editEventForm');
         Route::post('/addEvent', 'UserController@addEvent');
         Route::post('/editEvent/{id}', 'UserController@editEvent');
+        Route::get('/deleteEvent/{id}', 'UserController@deleteEvent');
         Route::get('/userProfile', 'UserController@profile')->name('current_user_profile');
         Route::get('/userPublicPage', 'UserController@userPublicPage')->name('user-public-page');
         Route::post('/updateProfile', 'UserController@updateProfile')->name('updateProfile');

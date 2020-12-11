@@ -36,6 +36,13 @@ class UserController extends Controller
         return view('profile.stream-key-code',compact('streamKeyCode'));
     }
 
+    public function changeStreamKeyCode(){
+        $user = Auth::user();
+        $user->stream_key = bin2hex(openssl_random_pseudo_bytes(10));
+        $user->save();
+        return Redirect::to("/admin/userPublicPage");
+    }
+
     public function eventList($eventType){
         if($eventType == "upcoming"){
             $eventList = StreamEvent::where('actual_end','=',null)->where('userkey', '=', Auth::user()->id)->get();
@@ -56,6 +63,12 @@ class UserController extends Controller
         $action = "edit";
         $event = StreamEvent::where('id', '=', $id)->first();
         return view('profile.event', compact('action', 'event'));
+    }
+
+    public function deleteEvent($id, Request $request){
+        $event = StreamEvent::where('id', '=', $id)->first();
+        $event->delete();
+        return Redirect::to("/admin/userPublicPage");
     }
 
     public function addEvent(Request $request){
