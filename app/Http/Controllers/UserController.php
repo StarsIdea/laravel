@@ -38,10 +38,10 @@ class UserController extends Controller
 
     public function eventList($eventType){
         if($eventType == "upcoming"){
-            $eventList = StreamEvent::where('actual_end','=',null)->get();
+            $eventList = StreamEvent::where('actual_end','=',null)->where('userkey', '=', Auth::user()->id)->get();
         }
         else if($eventType == "prev"){
-            $eventList = StreamEvent::where('actual_end','!=',null)->get();
+            $eventList = StreamEvent::where('actual_end','!=',null)->where('userkey', '=', Auth::user()->id)->get();
         }
 
         return view('profile.event-list', compact('eventList','eventType'));
@@ -69,8 +69,11 @@ class UserController extends Controller
             'playlist' => '',
             'imgcap' => ''
         ]);
-        // return view('profile.event', compact('action'));
+        // // return view('profile.event', compact('action'));
         return Redirect::to("/admin/eventList/upcoming");
+        // echo Auth::user();
+        // echo '<br />';
+        // echo Auth::user()->id;
     }
 
     public function editEvent($id, Request $request){
@@ -109,8 +112,9 @@ class UserController extends Controller
     }
 
     public function userPublicPage(){
-        $eventList = StreamEvent::where('actual_end','=',null)->get();
-        return view('profile.user-public-page', compact('eventList'));
+        $eventList = StreamEvent::where('actual_end','=',null)->where('userkey', '=', Auth::user()->id)->get();
+        $oldEventList = StreamEvent::where('actual_end','!=',null)->where('userkey', '=', Auth::user()->id)->get();
+        return view('profile.user-public-page', compact('eventList', 'oldEventList'));
     }
 
     public function updateProfile(Request $request){
@@ -206,6 +210,12 @@ class UserController extends Controller
         Auth::logout();
 
         return redirect('/login');
+    }
+
+    public function personalPage($url){
+        $user = User::where('public_url', '=', $url)->first();
+        $eventList = StreamEvent::where('actual_end','=',null)->where('userkey','=',$user->id)->get();
+        return view('profile.publicPersonalPage', compact(['user', 'eventList']));
     }
 
     public function subscribe(Request $request) {

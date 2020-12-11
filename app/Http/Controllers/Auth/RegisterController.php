@@ -114,7 +114,8 @@ class RegisterController extends Controller
             'allowed' => $data['allowed'],
             'userType' => $data['userType'],
             'stream_key' => $data['stream_key'],
-            'timezoneid' => $data['timezone']
+            'timezone' => $data['timezone'],
+            'public_url' => $this->slug($name)."_".time()
         ]);
     }
 
@@ -228,5 +229,13 @@ class RegisterController extends Controller
 
     public function genkey() {
         return bin2hex(openssl_random_pseudo_bytes(10));
+    }
+
+    public function slug($string){
+        $slug = trim($string); // trim the string
+        $slug= preg_replace('/[^a-zA-Z0-9 -]/','',$slug ); // only take alphanumerical characters, but keep the spaces and dashes too...
+        $slug= str_replace(' ','-', $slug); // replace spaces by dashes
+        $slug= strtolower($slug);  // make it lowercase
+        return $slug;
     }
 }

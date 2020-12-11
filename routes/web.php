@@ -146,4 +146,5 @@ Route::post('forget-password', 'Auth\ForgotPasswordController@postEmail')->name(
 Route::get('reset-password/{token}', 'Auth\ResetPasswordController@getPassword');
 Route::post('reset-password', 'Auth\ResetPasswordController@updatePassword')->name('reset-password');
 
+Route::get('/talent/{name}','UserController@personalPage');
 

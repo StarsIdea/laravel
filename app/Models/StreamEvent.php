@@ -15,12 +15,4 @@ class StreamEvent extends Model
     {
         return $this->belongsTo(User::class, 'userkey', 'id');
     }
-
-    public static function boot()
-    {
-        parent::boot();
-        static::creating(function ($event) {
-            $event->userkey = 0;
-        });
-    }
 }

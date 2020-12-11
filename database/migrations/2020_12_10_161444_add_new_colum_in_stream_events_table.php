@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class AddNewColumInUsers extends Migration
+class AddNewColumInStreamEventsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,8 +13,8 @@ class AddNewColumInUsers extends Migration
      */
     public function up()
     {
-        Schema::table('users', function (Blueprint $table) {
-            $table->Integer('timezoneid')->default(0);
+        Schema::table('stream_events', function (Blueprint $table) {
+            $table->string('timezone')->nullable();
         });
     }
 
@@ -25,8 +25,8 @@ class AddNewColumInUsers extends Migration
      */
     public function down()
     {
-        Schema::table('users', function (Blueprint $table) {
-            $table->dropColumn('timezoneid')->default(0);
+        Schema::table('stream_events', function (Blueprint $table) {
+            $table->dropColumn('timezone')->nullable();
         });
     }
 }

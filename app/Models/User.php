@@ -49,7 +49,8 @@ class User extends Authenticatable implements JWTSubject
         'verification_code',
         'is_verified',
         'stream_key',
-        'timezoneid'
+        'timezone',
+        'public_url'
     ];
 
     /**

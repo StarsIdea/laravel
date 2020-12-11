@@ -252,7 +252,7 @@
                 <select class="block mt-1 w-full" name="timezone">
                 @foreach ($timezone_list as $timezone)
                     <?php print_r($timezone->Name); ?>
-                    <option value="{{ $timezone->Time_zone_id }}">
+                    <option value="{{ $timezone->Name }}">
                         {{ $timezone->Name }}
                     </option>
                 @endforeach
