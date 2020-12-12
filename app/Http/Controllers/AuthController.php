@@ -24,7 +24,7 @@ class AuthController extends Controller
     {
         // $this->middleware('auth:api', ['except' => ['login', 'register', 'auth_test']]);
         if($request->input('status') == 'expired'){
-            $content = ['error' => 'Expired', 'new' => $this->createNewToken(JWTAuth::refresh())];
+            $content = ['error' => ' ', 'new' => $this->createNewToken(JWTAuth::refresh())];
             $result = ArrayToXml::convert($content);
             return response($result, 200)->header('Content-Type', 'text/xml');
         }
@@ -66,8 +66,8 @@ class AuthController extends Controller
         $content = [
             'access_token' => $token,
             'token_type' => 'bearer',
-            // 'expires_in' => auth('api')->factory()->getTTL() * 60,
-            'expires_in' => JWTAuth::factory()->getTTL() * 60,
+            'expires_in' => auth('api')->factory()->getTTL() * 60,
+            // 'expires_in' => JWTAuth::factory()->getTTL() * 60,
             // 'user' => auth('api')->user(),
             'user' => JWTAuth::user()->toArray()
         ];
