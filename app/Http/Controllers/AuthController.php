@@ -11,7 +11,8 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 use Spatie\ArrayToXml\ArrayToXml;
 use Illuminate\Http\Response;
-use JWTAuth;
+// use JWTAuth;
+use Tymon\JWTAuth\Facades\JWTAuth;
 
 class AuthController extends Controller
 {
@@ -66,7 +67,7 @@ class AuthController extends Controller
         $content = [
             'access_token' => $token,
             'token_type' => 'bearer',
-            'expires_in' => auth('api')->factory()->getTTL() * 60,
+            'expires_in' => auth('api')->factory()->getTTL() * 60 ,
             // 'expires_in' => JWTAuth::factory()->getTTL() * 60,
             // 'user' => auth('api')->user(),
             'user' => JWTAuth::user()->toArray()
@@ -141,7 +142,7 @@ class AuthController extends Controller
     public function refresh() {
         // return $this->createNewToken(auth('api')->refresh());
         // return $this->createNewToken(JWTAuth::refresh());
-        $result = ArrayToXml::convert($this->createNewToken(JWTAuth::refresh(), 'refresh'));
+        $result = ArrayToXml::convert($this->createNewToken(JWTAuth::refresh()));
         return response($result, 200)->header('Content-Type', 'text/xml');
     }
 
@@ -198,31 +199,31 @@ class AuthController extends Controller
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    protected function createNewToken($token,$type="new"){
-        // return response()->json([
-        //     'access_token' => $token,
-        //     'token_type' => 'bearer',
-        //     // 'expires_in' => auth('api')->factory()->getTTL() * 60,
-        //     // 'user' => auth('api')->user()
-        //     'expires_in' => JWTAuth::factory()->getTTL() * 60,
-        //     'user' => JWTAuth::user(),
-        // ]);
-        if($type == 'new'){
-            return [
-                'access_token' => $token,
-                'token_type' => 'bearer',
-                'expires_in' => JWTAuth::factory()->getTTL() * 60,
-                'user' => JWTAuth::user()->toArray(),
-            ];
-        }
-        else if($type == 'refresh'){
-            return [
-                'access_token' => $token,
-                'token_type' => 'bearer',
-                'expires_in' => JWTAuth::factory()->getRefreshTTL() * 60,
-                'user' => JWTAuth::user()->toArray(),
-            ];
-        }
+    protected function createNewToken($token){
+        Log::channel('stderr')->info(JWTAuth::user()->refreshTTL);
+        return [
+            'access_token' => $token,
+            'token_type' => 'bearer',
+            'expires_in' => JWTAuth::factory()->getTTL() * 60,
+            // 'user' => auth('api')->user(),
+            'user' => JWTAuth::user()->toArray()
+        ];
+        // if($type == 'new'){
+        //     return [
+        //         'access_token' => $token,
+        //         'token_type' => 'bearer',
+        //         'expires_in' => JWTAuth::factory()->getTTL() * 60,
+        //         'user' => JWTAuth::user()->toArray(),
+        //     ];
+        // }
+        // else if($type == 'refresh'){
+            // return [
+            //     'access_token' => $token,
+            //     'token_type' => 'bearer',
+            //     'expires_in' => JWTAuth::factory()->getRefreshTTL(),
+            //     'user' => JWTAuth::user()->toArray(),
+            // ];
+        // }
 
     }
 
