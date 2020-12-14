@@ -142,7 +142,20 @@ class AuthController extends Controller
     public function refresh() {
         // return $this->createNewToken(auth('api')->refresh());
         // return $this->createNewToken(JWTAuth::refresh());
-        $result = ArrayToXml::convert($this->createNewToken(JWTAuth::refresh()));
+        $refreshed = JWTAuth::refresh(JWTAuth::getToken());
+        $user = JWTAuth::setToken($refreshed)->toUser();
+        // Log::channel('stderr')->info(json_encode($user));
+        // $request->headers->set('Authorization','Bearer '.$refreshed);
+        // $result = ArrayToXml::convert($this->createNewToken(JWTAuth::refresh()));
+        $content = [
+            'access_token' => $refreshed,
+            'token_type' => 'bearer',
+            'expires_in' => auth('api')->factory()->getTTL() * 60 ,
+            // 'expires_in' => JWTAuth::factory()->getTTL() * 60,
+            // 'user' => auth('api')->user(),
+            'user' => $user
+        ];
+        $result = ArrayToXml::convert($content);
         return response($result, 200)->header('Content-Type', 'text/xml');
     }
 

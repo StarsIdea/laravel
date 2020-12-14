@@ -20,7 +20,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 Route::post('/auth/login', 'AuthController@login');
 Route::post('/auth/register', 'AuthController@register');
-
+Route::post('/auth/refresh', 'AuthController@refresh');
 
 Route::group([
         'middleware' => 'jwt.verify',
@@ -30,7 +30,7 @@ Route::group([
         // Route::post('/login', 'AuthController@login');
         // Route::post('/register', 'AuthController@register');
         Route::post('/logout', 'AuthController@logout');
-        Route::post('/refresh', 'AuthController@refresh');
+        // Route::post('/refresh', 'AuthController@refresh');
         Route::get('/user-profile', 'AuthController@userProfile');
     }
 );
