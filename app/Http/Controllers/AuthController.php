@@ -44,6 +44,7 @@ class AuthController extends Controller
             'password' => 'required|string|min:6',
         ]);
 
+        JWTAuth::factory()->setTTL(5);
 
         Log::channel('stderr')->info('Something happened!  login');
         // $xml = new SimpleXMLElement('<root/>');
@@ -63,7 +64,6 @@ class AuthController extends Controller
             return response($result, 200)->header('Content-Type', 'text/xml');
             // return response()->json(['error' => 'Unauthorized'], 200);
         }
-        JWTAuth::factory()->setTTL(10);
         $content = [
             'access_token' => $token,
             'token_type' => 'bearer',
@@ -91,6 +91,7 @@ class AuthController extends Controller
      */
     public function register(Request $request)
     {
+        JWTAuth::factory()->setTTL(5);
         $validator = Validator::make($request->all(), [
             'name' => 'required|string|between:2,100',
             'email' => 'required|string|email|max:100|unique:users',
@@ -110,7 +111,6 @@ class AuthController extends Controller
         //     'message' => 'User successfully registered',
         //     'user' => $user
         // ], 201);
-        JWTAuth::factory()->setTTL(10);
         $content = [
             'message' => 'User successfully registered',
             'user' => $user
@@ -143,7 +143,7 @@ class AuthController extends Controller
     public function refresh() {
         // return $this->createNewToken(auth('api')->refresh());
         // return $this->createNewToken(JWTAuth::refresh());
-        JWTAuth::factory()->setTTL(60);
+        JWTAuth::factory()->setTTL(10);
         $refreshed = JWTAuth::refresh(JWTAuth::getToken());
         $user = JWTAuth::setToken($refreshed)->toUser();
         // Log::channel('stderr')->info(json_encode($user));
@@ -154,7 +154,7 @@ class AuthController extends Controller
             'token_type' => 'bearer',
             'expires_in' => JWTAuth::factory()->getTTL() * 60,
             // 'user' => auth('api')->user(),
-            'user' => $user
+            'user' => $user->toArray()
         ];
         $result = ArrayToXml::convert($content);
         return response($result, 200)->header('Content-Type', 'text/xml');
