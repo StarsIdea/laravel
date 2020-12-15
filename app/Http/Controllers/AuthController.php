@@ -150,7 +150,7 @@ class AuthController extends Controller
         $content = [
             'access_token' => $refreshed,
             'token_type' => 'bearer',
-            'expires_in' => auth('api')->factory()->getTTL() * 60 ,
+            'expires_in' => 60 * 60 ,
             // 'expires_in' => JWTAuth::factory()->getTTL() * 60,
             // 'user' => auth('api')->user(),
             'user' => $user
