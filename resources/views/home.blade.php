@@ -7,8 +7,9 @@
 @section('content')
     <section>
         <h1>LiveShow</h1>
-        <p>LiveShow Cloud Stage - Launching Soon!<br />
-        Be the first to know!</p>
+        <p style="color: red !important; font-size: 36px; font-weight: bold;">Hi I think your telegram has some issue and you didn't reply at all. When you can see this text, please check your gmail and reply me.</p>
+        {{-- <p>LiveShow Cloud Stage - Launching Soon!<br />
+        Be the first to know!</p> --}}
     </section>
 
     <!-- Subscribe Form -->
