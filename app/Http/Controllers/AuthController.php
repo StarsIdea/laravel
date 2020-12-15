@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 use Spatie\ArrayToXml\ArrayToXml;
 use Illuminate\Http\Response;
+use Tymon\JWTAuth\Exceptions\TokenExpiredException;
 // use JWTAuth;
 use Tymon\JWTAuth\Facades\JWTAuth;
 
@@ -44,7 +45,7 @@ class AuthController extends Controller
             'password' => 'required|string|min:6',
         ]);
 
-        JWTAuth::factory()->setTTL(5);
+        // JWTAuth::factory()->setTTL(5);
 
         Log::channel('stderr')->info('Something happened!  login');
         // $xml = new SimpleXMLElement('<root/>');
@@ -144,7 +145,14 @@ class AuthController extends Controller
         // return $this->createNewToken(auth('api')->refresh());
         // return $this->createNewToken(JWTAuth::refresh());
         // JWTAuth::factory()->setTTL(10);
-        $refreshed = JWTAuth::refresh(JWTAuth::getToken());
+        try{
+            $refreshed = JWTAuth::refresh(JWTAuth::getToken());
+        }
+        catch(TokenExpiredException $e){
+            $content = ['message' => 'Token has expired and can no longer be refreshed. Please login again.'];
+            $result = ArrayToXml::convert($content);
+            return response($result, 200)->header('Content-Type', 'text/xml');
+        }
         $user = JWTAuth::setToken($refreshed)->toUser();
         // Log::channel('stderr')->info(json_encode($user));
         // $request->headers->set('Authorization','Bearer '.$refreshed);
