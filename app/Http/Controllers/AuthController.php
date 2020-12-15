@@ -91,7 +91,7 @@ class AuthController extends Controller
      */
     public function register(Request $request)
     {
-        JWTAuth::factory()->setTTL(5);
+        // JWTAuth::factory()->setTTL(5);
         $validator = Validator::make($request->all(), [
             'name' => 'required|string|between:2,100',
             'email' => 'required|string|email|max:100|unique:users',
@@ -143,7 +143,7 @@ class AuthController extends Controller
     public function refresh() {
         // return $this->createNewToken(auth('api')->refresh());
         // return $this->createNewToken(JWTAuth::refresh());
-        JWTAuth::factory()->setTTL(10);
+        // JWTAuth::factory()->setTTL(10);
         $refreshed = JWTAuth::refresh(JWTAuth::getToken());
         $user = JWTAuth::setToken($refreshed)->toUser();
         // Log::channel('stderr')->info(json_encode($user));
