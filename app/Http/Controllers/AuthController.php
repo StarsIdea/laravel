@@ -63,7 +63,7 @@ class AuthController extends Controller
             return response($result, 200)->header('Content-Type', 'text/xml');
             // return response()->json(['error' => 'Unauthorized'], 200);
         }
-
+        JWTAuth::factory()->setTTL(10);
         $content = [
             'access_token' => $token,
             'token_type' => 'bearer',
@@ -110,6 +110,7 @@ class AuthController extends Controller
         //     'message' => 'User successfully registered',
         //     'user' => $user
         // ], 201);
+        JWTAuth::factory()->setTTL(10);
         $content = [
             'message' => 'User successfully registered',
             'user' => $user
@@ -142,6 +143,7 @@ class AuthController extends Controller
     public function refresh() {
         // return $this->createNewToken(auth('api')->refresh());
         // return $this->createNewToken(JWTAuth::refresh());
+        JWTAuth::factory()->setTTL(60);
         $refreshed = JWTAuth::refresh(JWTAuth::getToken());
         $user = JWTAuth::setToken($refreshed)->toUser();
         // Log::channel('stderr')->info(json_encode($user));
@@ -150,8 +152,7 @@ class AuthController extends Controller
         $content = [
             'access_token' => $refreshed,
             'token_type' => 'bearer',
-            'expires_in' => 60 * 60 ,
-            // 'expires_in' => JWTAuth::factory()->getTTL() * 60,
+            'expires_in' => JWTAuth::factory()->getTTL() * 60,
             // 'user' => auth('api')->user(),
             'user' => $user
         ];
